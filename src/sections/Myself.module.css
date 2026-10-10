@@ -1,0 +1,234 @@
+/*
+ * Số đo lấy từ design-ref/myself 1.png, khổ 1440, gốc toạ độ = mép trên phần (ngay dưới dải menu, y=66).
+ * Khối xanh "Meet four sides" bắt đầu ở 1590 và cao 1121.
+ */
+.myself {
+  position: relative;
+  overflow: hidden; /* lego đáy tràn quá mép dưới bị cắt như thiết kế */
+}
+
+/* ---------- A LITTLE ABOUT ME ----------
+ * Bắt đầu ở đầu dòng tiêu đề (730.7 dưới dải menu; khoảng phía trên là cụm lego chung).
+ * Khối xanh bắt đầu ở 1590 → phần này cao 1590 − 730.7 = 859.3.
+ */
+
+.about {
+  position: relative;
+  height: calc(859.3 * var(--px));
+  padding-inline: var(--gutter);
+  color: var(--c-blue);
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fs-hero);
+  color: var(--c-text);
+}
+
+.blue {
+  color: var(--c-blue);
+}
+
+.intro {
+  position: relative;
+  z-index: 1;
+  /* Khung chữ rộng ~865px: xuống dòng đúng chỗ như thiết kế ("curious" / "whether"). */
+  width: calc(865 * var(--px));
+  margin-top: calc(119.7 * var(--px));
+  font-size: var(--fs-body);
+  line-height: 1.172;
+}
+
+.intro strong {
+  font-weight: 700;
+}
+
+.facts {
+  margin-top: calc(44.3 * var(--px));
+}
+
+.school {
+  margin-top: calc(21.7 * var(--px));
+}
+
+.gap1,
+.gap2 {
+  display: inline-block;
+}
+.gap1 {
+  width: calc(10 * var(--px));
+}
+.gap2 {
+  width: calc(26 * var(--px));
+}
+
+/* ---------- Khối lego lớn ↔ ảnh chân dung ----------
+ * Hộp chung bao cả hai hình: x 642–1291.3, đỉnh 269.8 (tính từ đầu dòng tiêu đề), cao 645.6;
+ * đè lên mép khối xanh. Lego lệch (28.8, 34.1) rộng 620.5; ảnh lệch (0, 0) rộng 645.7.
+ * Chuyển bằng phóng-mờ 400ms, chỉ dùng biến đổi 2D: lúc đứng yên không còn transform/filter
+ * nên trình duyệt vẽ ảnh nét hoàn toàn.
+ */
+.flip {
+  position: absolute;
+  z-index: 3;
+  left: calc(642 * var(--px));
+  top: calc(269.8 * var(--px));
+  width: calc(649.3 * var(--px));
+  height: calc(645.6 * var(--px));
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.brick,
+.photo {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  transition:
+    opacity 400ms ease,
+    transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter 400ms ease,
+    translate 250ms ease;
+}
+
+.brick {
+  left: calc(28.8 * var(--px));
+  top: calc(34.1 * var(--px));
+  width: calc(620.5 * var(--px));
+}
+
+.photo {
+  left: 0;
+  top: 0;
+  width: calc(645.7 * var(--px));
+}
+
+/* Hình đang ẩn: thu nhỏ + mờ nhoè + trong suốt. */
+.flip[data-flipped='false'] .photo,
+.flip[data-flipped='true'] .brick {
+  opacity: 0;
+  transform: scale(0.85);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.flip:hover .brick,
+.flip:hover .photo {
+  /* nhích nhẹ khi rê chuột để biết bấm được */
+  translate: 0 calc(-6 * var(--px));
+}
+
+.flip:focus-visible {
+  outline: 2px solid var(--c-blue);
+  outline-offset: 4px;
+  border-radius: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brick,
+  .photo {
+    transition: none;
+  }
+}
+
+/* ---------- MEET FOUR SIDES OF ME ---------- */
+
+.sides {
+  position: relative;
+  height: calc(1121 * var(--px));
+  background: var(--c-blue);
+  color: #fff;
+}
+
+.sidesTitle {
+  position: absolute;
+  z-index: 1;
+  left: calc(260 * var(--px));
+  top: calc(82.1 * var(--px));
+  font-size: max(28px, calc(64 * var(--px)));
+  color: var(--c-yellow);
+}
+
+.sideList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Hai cột x = 260 / 895; hai hàng (đầu dòng tiêu đề) y = 318.6 / 561.6. */
+.sideList li {
+  position: absolute;
+  z-index: 1;
+}
+.sideList li:nth-child(odd) {
+  left: calc(260 * var(--px));
+}
+.sideList li:nth-child(even) {
+  left: calc(895 * var(--px));
+}
+.sideList li:nth-child(-n + 2) {
+  top: calc(318.6 * var(--px));
+}
+.sideList li:nth-child(n + 3) {
+  top: calc(561.6 * var(--px));
+}
+
+.side {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  color: inherit;
+  text-decoration: none;
+}
+
+.sideTitle {
+  font-size: max(24px, calc(48 * var(--px)));
+  color: #ffa2f7;
+  align-self: flex-start;
+}
+
+.sideText {
+  margin-top: calc(-1.5 * var(--px));
+  font-size: var(--fs-body);
+  line-height: 1.172;
+}
+
+/* Mũi tên dài đúng bằng dòng mô tả, cách dòng mô tả 16.7px. */
+.arrow {
+  position: relative;
+  height: calc(14.2 * var(--px));
+  margin-top: calc(16.7 * var(--px));
+  transition: transform 250ms ease;
+}
+
+.arrow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 1px;
+  top: 50%;
+  border-top: 1.2px solid currentColor;
+}
+
+.arrow svg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: auto;
+  overflow: visible;
+}
+
+.side:hover .arrow,
+.side:focus-visible .arrow {
+  transform: translateX(calc(12 * var(--px)));
+}
+
+.side:focus-visible {
+  outline: 2px solid var(--c-yellow);
+  outline-offset: 6px;
+}

@@ -3,7 +3,7 @@ import styles from './Placeholder.module.css';
 
 export function Awards() {
   return (
-    <Placeholder label="AWARDS" clusterHeight={751} bodyHeight={3842} titleSize={52} gutter={62}>
+    <Placeholder label="AWARDS" bodyHeight={3842} titleSize={52} gutter={62}>
       BEYOND THE MEDAL.
       <br />
       <span className={styles.green}>

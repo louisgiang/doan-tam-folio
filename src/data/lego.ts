@@ -13,6 +13,8 @@ export interface LegoBlock {
   rotation: number;
   /** Thứ tự lớp. */
   z: number;
+  /** Khối chỉ có ở cụm các phần, không có ở HOME (nằm chỗ dòng tiêu đề HOME). */
+  sectionOnly?: boolean;
 }
 
 export interface LegoCluster {

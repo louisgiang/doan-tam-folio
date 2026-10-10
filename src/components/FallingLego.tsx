@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, type CSSProperties, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import { legoAspect, legoUrl, type LegoCluster } from '../data/lego';
 import { FALL } from '../data/lego-motion';
 import {
@@ -18,19 +18,28 @@ import styles from './FallingLego.module.css';
  */
 export function FallingLego({
   cluster,
-  active,
   avoidRef,
+  measureKey,
+  hideFlaggedAtStart = false,
   className,
 }: {
   cluster: LegoCluster;
-  /** Cho phép rơi (ví dụ phần đã thả xuống xong). */
-  active: boolean;
-  /** Phần tử chữ mà lego phải mờ hẳn trước khi chạm tới (thường là tiêu đề). */
+  /**
+   * Vùng chứa chữ mà lego phải mờ hẳn trước khi chạm tới: dùng phần tử có
+   * [data-lego-avoid] bên trong (thường là tiêu đề), không có thì dùng chính vùng đó.
+   */
   avoidRef?: RefObject<HTMLElement>;
+  /** Đổi giá trị này khi chữ bên dưới thay đổi để đo lại (không khởi động lại chuyển động). */
+  measureKey?: string;
+  /** Ẩn các khối sectionOnly trong lượt rơi đầu (dùng khi trang mở ở HOME). */
+  hideFlaggedAtStart?: boolean;
   className?: string;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const blockRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const measureRef = useRef<() => void>(() => {});
+  // Chỉ xét lúc mới mở trang.
+  const [hideFlagged] = useState(hideFlaggedAtStart);
   const { width: FW, height: FH } = cluster.frame;
 
   // Khung bị co chiều cao (vd. HOME co theo màn hình): co cả khối theo cùng tỉ lệ k,
@@ -47,10 +56,14 @@ export function FallingLego({
 
   useEffect(() => {
     const frame = frameRef.current;
-    if (!frame || !active) return;
+    if (!frame) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const inputs = cluster.blocks.map((b) => ({ ...b, aspect: legoAspect(b.type) }));
+    const inputs = cluster.blocks.map((b) => ({
+      ...b,
+      aspect: legoAspect(b.type),
+      hiddenFirstPass: hideFlagged && !!b.sectionOnly,
+    }));
     let blocks: FallBlock[] = [];
     // Mọi phép tính dùng đơn vị "px thiết kế theo chiều rộng"; khung co thì frameH = FH·k.
     let scale = 1;
@@ -69,7 +82,8 @@ export function FallingLego({
         cfg(k),
       );
       const lines: TextLine[] = [];
-      const avoid = avoidRef?.current;
+      const area = avoidRef?.current;
+      const avoid = area?.querySelector<HTMLElement>('[data-lego-avoid]') ?? area;
       if (avoid) {
         const range = document.createRange();
         range.selectNodeContents(avoid);
@@ -86,6 +100,7 @@ export function FallingLego({
       period = finalizeSpeeds(blocks, cfg(k));
     };
     measure();
+    measureRef.current = measure;
 
     const render = (t: number) => {
       blocks.forEach((b, i) => {
@@ -137,7 +152,12 @@ export function FallingLego({
       ro.disconnect();
       document.removeEventListener('visibilitychange', update);
     };
-  }, [active, cluster, FW, FH, avoidRef]);
+  }, [cluster, FW, FH, avoidRef, hideFlagged]);
+
+  // Chữ bên dưới đổi (chuyển phần): đo lại vị trí dòng chữ cần tránh.
+  useEffect(() => {
+    measureRef.current();
+  }, [measureKey]);
 
   return (
     <div
@@ -164,6 +184,7 @@ export function FallingLego({
               width: `calc(${b.w}% * var(--k, 1))`,
               zIndex: b.z,
               rotate: b.rotation ? `${b.rotation}deg` : undefined,
+              opacity: hideFlagged && b.sectionOnly ? 0 : undefined,
             } as CSSProperties
           }
         />

@@ -14,9 +14,11 @@ import { isSectionId, type SectionId } from '../data/sections';
 import { followScroll } from '../lib/followScroll';
 
 /**
- * Cơ chế mở/thu từng phần (BRIEF mục 4):
- * - chỉ một phần mở tại một thời điểm; phần cũ thu lại rồi phần mới thả xuống;
- * - cuộn mượt tới đầu vùng nội dung (hoặc về đầu trang khi bấm HOME);
+ * Cơ chế đổi nội dung (BRIEF mục 4, đã chỉnh theo chủ dự án):
+ * - cụm lego trên cùng dùng chung, luôn ở đó; bên dưới là MỘT khối nội dung:
+ *   mặc định là lời chào HOME ("HI, I'M TAM…"), bấm menu thì khối đang hiện thu lại
+ *   và nội dung phần mới thả xuống thay vào;
+ * - mỗi lần điều hướng cuộn mượt về đầu trang;
  * - đồng bộ với #hash trên thanh địa chỉ và nút Back của trình duyệt.
  */
 
@@ -28,13 +30,13 @@ const EASE_OUT = 'cubic-bezier(0.22, 1, 0.36, 1)';
 const EASE_IN = 'cubic-bezier(0.55, 0, 0.75, 0.2)';
 
 interface NavState {
+  /** Nội dung đang hiện dưới cụm lego (null = lời chào HOME). */
   current: SectionId | null;
-  phase: Phase | null;
+  phase: Phase;
 }
 
 interface SectionNavValue extends NavState {
   navigate: (id: SectionId | 'home') => void;
-  regionRef: RefObject<HTMLDivElement>;
   clipRef: RefObject<HTMLDivElement>;
   innerRef: RefObject<HTMLDivElement>;
 }
@@ -51,13 +53,14 @@ function hashToTarget(hash: string): SectionId | null {
 }
 
 export function SectionNavProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<NavState>({ current: null, phase: null });
-  const regionRef = useRef<HTMLDivElement>(null);
+  // Mở link có sẵn #lego: hiện ngay phần LEGO, không cần animation.
+  const [initial] = useState(() => hashToTarget(window.location.hash));
+  const [state, setState] = useState<NavState>({ current: initial, phase: 'open' });
   const clipRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const currentRef = useRef<SectionId | null>(null);
-  const targetRef = useRef<SectionId | null>(null);
+  const currentRef = useRef<SectionId | null>(initial);
+  const targetRef = useRef<SectionId | null>(initial);
   const runningRef = useRef(false);
   const stopScrollRef = useRef<() => void>(() => {});
 
@@ -104,25 +107,21 @@ export function SectionNavProvider({ children }: { children: ReactNode }) {
     ]).catch(() => {});
   }, []);
 
-  /** Chạy lần lượt: thu phần đang mở (nếu có) rồi thả phần đích xuống. */
+  /** Chạy lần lượt: thu nội dung đang hiện rồi thả nội dung đích xuống. */
   const sequence = useCallback(async () => {
     try {
       while (currentRef.current !== targetRef.current) {
-        if (currentRef.current !== null) {
-          flushSync(() => setState((s) => ({ ...s, phase: 'closing' })));
-          await collapse();
-          currentRef.current = null;
-          flushSync(() => setState({ current: null, phase: null }));
-          clipRef.current?.getAnimations().forEach((a) => a.cancel());
-          innerRef.current?.getAnimations().forEach((a) => a.cancel());
-        } else {
-          const next = targetRef.current;
-          currentRef.current = next;
-          flushSync(() => setState({ current: next, phase: 'opening' }));
-          await expand();
-          if (currentRef.current === targetRef.current) {
-            setState({ current: next, phase: 'open' });
-          }
+        flushSync(() => setState((s) => ({ ...s, phase: 'closing' })));
+        await collapse();
+        const next = targetRef.current;
+        currentRef.current = next;
+        flushSync(() => setState({ current: next, phase: 'opening' }));
+        // Bỏ trạng thái "đã thu" của lần trước; expand() bắt đầu từ chiều cao 0 ngay trong cùng khung hình.
+        clipRef.current?.getAnimations().forEach((a) => a.cancel());
+        innerRef.current?.getAnimations().forEach((a) => a.cancel());
+        await expand();
+        if (currentRef.current === targetRef.current) {
+          setState({ current: next, phase: 'open' });
         }
       }
     } finally {
@@ -140,27 +139,19 @@ export function SectionNavProvider({ children }: { children: ReactNode }) {
     return runPromiseRef.current;
   }, [sequence]);
 
-  const regionTop = useCallback(() => {
-    const region = regionRef.current;
-    const navH = document.getElementById('site-nav')?.offsetHeight ?? 0;
-    if (!region) return 0;
-    return region.getBoundingClientRect().top + window.scrollY - navH;
-  }, []);
-
   const go = useCallback(
     (next: SectionId | null) => {
       targetRef.current = next;
       stopScrollRef.current();
-      const target = next === null ? () => 0 : regionTop;
       if (skipMotion()) {
-        // Không animation: đổi phần xong rồi nhảy thẳng tới đích.
-        void run().then(() => window.scrollTo(0, target()));
+        // Không animation: đổi nội dung xong rồi nhảy thẳng lên đầu trang.
+        void run().then(() => window.scrollTo(0, 0));
         return;
       }
-      stopScrollRef.current = followScroll(target, () => runningRef.current);
+      stopScrollRef.current = followScroll(() => 0);
       void run();
     },
-    [regionTop, run],
+    [run],
   );
 
   const navigate = useCallback(
@@ -178,16 +169,13 @@ export function SectionNavProvider({ children }: { children: ReactNode }) {
   // Mở theo #hash khi tải trang và khi bấm Back/Forward.
   useEffect(() => {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
-    const initial = hashToTarget(window.location.hash);
-    // Lùi sang microtask: không gọi flushSync ngay trong effect.
-    if (initial) queueMicrotask(() => go(initial));
     const onPop = () => go(hashToTarget(window.location.hash));
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, [go]);
 
   const value = useMemo(
-    () => ({ ...state, navigate, regionRef, clipRef, innerRef }),
+    () => ({ ...state, navigate, clipRef, innerRef }),
     [state, navigate],
   );
 

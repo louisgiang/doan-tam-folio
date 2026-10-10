@@ -82,3 +82,37 @@
 
 ### Ghi chú
 - Điện thoại: chưa xử lý (bước 6).
+
+## Bước 4 — MYSELF
+
+### Đo đạc (khổ 1440, gốc = mép trên phần, ngay dưới dải menu y=66)
+- Tiêu đề "A LITTLE ABOUT ME" 97.8px, đầu dòng ở 730.7.
+- Chữ giới thiệu: Roboto 20px, dòng cao 23.44px (line-height mặc định của Roboto), màu #2060D7. Khung chữ rộng 865px để xuống dòng đúng chỗ như thiết kế (đã đối chiếu: lệch < 2px). Khoảng cách các đoạn: 44.3px và 21.7px. Khoảng trắng trong "GPA  9.5/10   |   SAT  1510": 10px và 26px.
+- Khối lego lớn: rộng 620.5px tại (670.8, 1034.6); ảnh chân dung: rộng 645.7px tại (642, 1000.5). Cả hai đè lên mép khối xanh.
+- Khối xanh "Meet four sides": bắt đầu ở 1590, cao 1121 (tới hết phần). Tiêu đề vàng #FFE596 64px tại (260, 82). Tên mục hồng **#FFA2F7** 48px; mô tả trắng 20px; mũi tên dài bằng dòng mô tả. Cột x = 260 / 895; hàng y = 318.6 / 561.6.
+
+### Lệch giữa hai ảnh thiết kế / tự quyết
+- `myself 2.png` (trạng thái ảnh chân dung) có toàn bộ nội dung lệch xuống ~18–23px so với `myself 1.png`. Lấy `myself 1` làm chuẩn; vị trí ảnh chân dung quy đổi theo mép trên khối xanh.
+- Tên mục "LEGO" trong thiết kế cao hơn "MYSELF" 7px (hàng 1), trong khi hàng 2 thẳng hàng. Coi là lệch vô ý: cả bốn mục dùng cùng khoảng cách tên mục → mô tả (theo hàng 2 và MYSELF).
+- Hiệu ứng đổi lego ↔ ảnh: xem "Chỉnh sau góp ý" bên dưới.
+- Bấm mục trong khối xanh = bấm menu; mũi tên dịch sang phải 12px khi hover.
+
+### Lego
+- Cụm đầu phần: **MYSELF, LEGO, COMMUNITY, AWARDS dùng chung `src/data/lego-section.json`** (40 khối = 37 khối HOME + 3 khối hàng dưới). Đã đo cả 4 ảnh thiết kế: vị trí giống hệt nhau (chỉ khác ở việc nhận dạng 2 khối hồng lego-13/lego-15, hai ảnh gần như giống nhau).
+- Lego khối xanh (`src/data/lego-myself-blue.json`, 12 khối, đung đưa): đo bằng `measure-lego.mjs` trên nền #2060D7. Script đã được bổ sung xử lý khối bị mép dưới cắt (tính tỉ lệ theo chiều ngang, so phần nhìn thấy). Khối hồng chỉ lộ núm ở mép dưới (x≈858) **đặt thủ công** (lego-13, tỉ lệ 0.44) vì phần nhìn thấy quá nhỏ để đo tự động.
+- Lego đung đưa: CSS animation (chỉ transform), ±2.5° (mỗi khối 70–100%), nhấp nhô 5px, chu kỳ 4–6s ngẫu nhiên, lệch pha; dừng khi ra khỏi màn hình; reduced-motion đứng yên.
+- Cụm lego của phần chỉ bắt đầu rơi khi phần đã thả xuống xong (phase = open).
+
+### Ảnh
+- `big-lego.png` 1.5MB → WebP 82KB; `avatar.png` 4MB → WebP 154KB (rộng 1600px, đủ cho 1920 @2x).
+
+### Chỉnh sau góp ý (bước 4, lần 2)
+- **Luồng điều hướng đổi theo chủ dự án:** cụm lego trên cùng là MỘT cụm dùng chung, luôn rơi. Bên dưới chỉ có MỘT khối nội dung: mặc định là lời chào HOME; bấm menu thì khối đang hiện thu lại (400ms) và nội dung phần mới thả xuống thay vào (650ms). Không còn cảnh hai cụm lego nối nhau.
+  - Dữ liệu chung: `src/data/lego-section.json` (40 khối). 3 khối `sectionOnly` (nằm đúng chỗ dòng "HI, I'M TAM.") bị ẩn trong lượt rơi đầu nếu trang mở ở HOME; từ lượt sau chúng rơi như các khối khác (và mờ trước khi chạm chữ). `lego-home.json` đã bỏ.
+  - Khoảng từ menu tới đầu dòng tiêu đề theo thiết kế: HOME 639.5 · MYSELF/LEGO 730.7 · COMMUNITY 751 · AWARDS 750.8; tất cả co cùng tỉ lệ với HOME (co theo chiều cao màn hình), đổi chiều cao mượt 500ms khi chuyển phần.
+  - Mỗi lần điều hướng cuộn mượt về đầu trang. Mở link có sẵn `#lego` thì hiện ngay phần LEGO (không animation).
+  - Lego tự đo lại vị trí tiêu đề cần tránh mỗi khi nội dung đổi (không khởi động lại chuyển động).
+- **Bỏ nhãn gợi ý** "Click to meet me / Click to flip back". Gợi ý còn lại: con trỏ bàn tay + hình nhích lên 6px khi rê chuột.
+- **Khối lego lớn nét hơn:**
+  - Đổi hiệu ứng từ lật 3D sang **phóng-mờ 400ms** (BRIEF cho phép một trong hai): phần tử 3D (perspective/preserve-3d/backface) hay bị trình duyệt vẽ ở độ phân giải thấp. Giờ lúc đứng yên ảnh không còn transform/filter nào → vẽ nét hoàn toàn.
+  - Ảnh nén lại ở chất lượng cao: big-lego WebP q95 rộng 2000px, kênh trong suốt không nén mất (179KB, trước 82KB q82 rộng 1600 — mảng xanh chuyển màu dễ bị dải màu). Avatar q88 rộng 2000px (272KB).

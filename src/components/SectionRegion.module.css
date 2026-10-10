@@ -1,8 +1,41 @@
 .region {
   position: relative;
+  /*
+   * Vùng lego co theo chiều cao màn hình (chủ dự án chọn ở bước 3): tiêu đề HOME + mô tả
+   * luôn nằm trọn trong màn hình đầu tiên. --lego-zone = khoảng tới tiêu đề HOME;
+   * không cao hơn thiết kế (639.5px), không thấp hơn một nửa thiết kế.
+   * Mọi phần dùng cùng tỉ lệ co này để cụm lego không đổi kích thước khi chuyển phần.
+   */
+  --lego-zone: clamp(
+    calc(320 * var(--px)),
+    calc(100svh - var(--nav-h) - 2.4 * var(--fs-hero) - 2.4 * var(--fs-body) - 62.5 * var(--px) - 24px),
+    calc(639.5 * var(--px))
+  );
 }
 
-/* Chỉ cắt nội dung khi đang giãn/thu; lúc đã mở để lego lớn được tràn mép như thiết kế. */
+/* Khung lego: thiết kế 753 cao khi vùng tới tiêu đề HOME là 639.5. */
+.region .lego {
+  aspect-ratio: auto;
+  height: calc(var(--lego-zone) * 753 / 639.5);
+}
+
+/* Khoảng trống tới đầu dòng tiêu đề của nội dung đang hiện; đổi mượt khi chuyển phần. */
+.spacer {
+  height: calc(var(--lego-zone) * var(--title-top) / 639.5);
+  transition: height 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.clip {
+  position: relative;
+}
+
+/* Chỉ cắt nội dung khi đang thu/thả; lúc đã mở để lego lớn được tràn mép như thiết kế. */
 .clip[data-animating] {
   overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spacer {
+    transition: none;
+  }
 }

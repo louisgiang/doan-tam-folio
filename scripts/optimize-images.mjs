@@ -10,11 +10,11 @@ const SRC = path.join(ROOT, 'figma-export/assets');
 const OUT = path.join(ROOT, 'src/assets');
 
 const report = [];
-async function toWebp(from, to, { maxWidth, quality = 82 } = {}) {
+async function toWebp(from, to, { maxWidth, quality = 82, alphaQuality = 90 } = {}) {
   fs.mkdirSync(path.dirname(to), { recursive: true });
   let img = sharp(from);
   if (maxWidth) img = img.resize({ width: maxWidth, withoutEnlargement: true });
-  const info = await img.webp({ quality, alphaQuality: 90, effort: 6 }).toFile(to);
+  const info = await img.webp({ quality, alphaQuality, effort: 6 }).toFile(to);
   report.push([path.relative(ROOT, to), fs.statSync(from).size, info.size, info.width, info.height]);
   return info;
 }
@@ -34,6 +34,19 @@ for (const { n, f } of [...byHash.values()].sort((a, b) => a.n - b.n)) {
   legoTypes[`lego-${n}`] = { aspect: +(info.height / info.width).toFixed(4) };
 }
 fs.writeFileSync(path.join(ROOT, 'src/data/lego-types.json'), JSON.stringify(legoTypes, null, 2) + '\n');
+
+// MYSELF: khối lego xanh lớn + ảnh chân dung (hiển thị ~620px ở 1440 → ~1650px ở 1920 @2x).
+// Chất lượng cao vì mảng xanh chuyển màu mượt của khối lego dễ bị dải màu/nhoè khi nén mạnh.
+await toWebp(path.join(SRC, 'myself/big-lego.png'), path.join(OUT, 'myself/big-lego.webp'), {
+  maxWidth: 2000,
+  quality: 95,
+  alphaQuality: 100,
+});
+await toWebp(path.join(SRC, 'myself/avatar.png'), path.join(OUT, 'myself/avatar.webp'), {
+  maxWidth: 2000,
+  quality: 88,
+  alphaQuality: 100,
+});
 
 for (const [file, before, after, w, h] of report)
   console.log(file.padEnd(40), `${(before / 1024).toFixed(0)}KB -> ${(after / 1024).toFixed(0)}KB`, `${w}x${h}`);

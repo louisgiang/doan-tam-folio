@@ -77,6 +77,7 @@ for (let s = 0; s < W * H; s++) {
   blobs.push(b);
 }
 const found = blobs.filter((b) => b.n > 150);
+for (const b of found) b.clippedBottom = b.y1 >= H - 1;
 
 // 3. Các loại khối: bỏ file trùng (giữ số nhỏ nhất, giống optimize-images.mjs), cắt phần trong suốt.
 const num = (f) => Number(f.match(/(\d+)\.png$/)[1]);
@@ -108,9 +109,11 @@ for (const f of files) {
 // 4. Với mỗi vùng: thử mọi loại, co về đúng kích thước vùng, ghép lên nền, tính sai số.
 async function score(type, b) {
   const w = b.x1 - b.x0 + 1, h = b.y1 - b.y0 + 1;
+  // Khối bị mép dưới vùng đo cắt mất: tỉ lệ lấy theo chiều ngang, chỉ so phần nhìn thấy.
+  const fullH = b.clippedBottom ? Math.max(h, Math.round((w * type.ch) / type.cw)) : h;
   const { data } = await sharp(type.buf)
     .extract({ left: type.cx, top: type.cy, width: type.cw, height: type.ch })
-    .resize(w, h, { fit: 'fill' })
+    .resize(w, fullH, { fit: 'fill' })
     .flatten({ background: { r: bg[0], g: bg[1], b: bg[2] } })
     .raw()
     .toBuffer({ resolveWithObject: true });
@@ -142,7 +145,9 @@ for (const b of found) {
     h: +(t.fullH * k).toFixed(1),
     _fit: +best.s.toFixed(1),
     _scale: +k.toFixed(4),
-    _aspectErr: +((b.y1 - b.y0 + 1) / (b.x1 - b.x0 + 1) / (t.ch / t.cw) - 1).toFixed(3),
+    _aspectErr: b.clippedBottom
+      ? 'cắt đáy'
+      : +((b.y1 - b.y0 + 1) / (b.x1 - b.x0 + 1) / (t.ch / t.cw) - 1).toFixed(3),
   });
 }
 out.sort((a, b) => a.y - b.y || a.x - b.x);
@@ -155,7 +160,8 @@ const MAX_FIT = Number(opt('max-fit')[0] ?? 10);
 const good = out.filter((o) => o._fit <= MAX_FIT);
 const rejected = out.filter((o) => o._fit > MAX_FIT);
 if (rejected.length) console.log(`bỏ ${rejected.length} vùng sai số > ${MAX_FIT}`);
-const frameH = Math.ceil(Math.max(...good.map((o) => o.y + o.h)) - ry);
+// Khung cao tới đáy khối thấp nhất, nhưng không quá mép dưới vùng đo (khối tràn bị cắt như thiết kế).
+const frameH = Math.min(rh, Math.ceil(Math.max(...good.map((o) => o.y + o.h)) - ry));
 const pct = (v, total) => +((v / total) * 100).toFixed(3);
 const data = {
   source: path.basename(inFile),

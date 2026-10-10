@@ -1,5 +1,5 @@
 {
-  "source": "Home.png",
+  "source": "myself 1.png",
   "frame": {
     "width": 1440,
     "height": 753
@@ -286,12 +286,39 @@
       "z": 35
     },
     {
+      "type": "lego-5",
+      "x": 12.326,
+      "y": 78.074,
+      "w": 10.764,
+      "rotation": 0,
+      "z": 36,
+      "sectionOnly": true
+    },
+    {
+      "type": "lego-7",
+      "x": 39.931,
+      "y": 78.672,
+      "w": 6.722,
+      "rotation": 0,
+      "z": 37,
+      "sectionOnly": true
+    },
+    {
+      "type": "lego-6",
+      "x": 25.938,
+      "y": 79.92,
+      "w": 8.819,
+      "rotation": 0,
+      "z": 38,
+      "sectionOnly": true
+    },
+    {
       "type": "lego-2",
       "x": 76.042,
       "y": 84.595,
       "w": 8.104,
       "rotation": 0,
-      "z": 36
+      "z": 39
     },
     {
       "type": "lego-36",
@@ -299,7 +326,8 @@
       "y": 89.336,
       "w": 6.875,
       "rotation": 0,
-      "z": 37
+      "z": 40
     }
-  ]
+  ],
+  "note": "sectionOnly: khối không có trong cụm HOME (nằm đúng chỗ dòng \"HI, I'M TAM.\"); ở HOME ẩn trong lượt rơi đầu."
 }

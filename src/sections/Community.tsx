@@ -3,7 +3,7 @@ import styles from './Placeholder.module.css';
 
 export function Community() {
   return (
-    <Placeholder label="COMMUNITY" clusterHeight={751} bodyHeight={2341} titleSize={64}>
+    <Placeholder label="COMMUNITY" bodyHeight={2341} titleSize={64}>
       FINANCE IN ACTION.
       <br />
       <span className={styles.green}>

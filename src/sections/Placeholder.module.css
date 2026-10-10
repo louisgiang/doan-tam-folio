@@ -2,7 +2,6 @@
   padding-inline: max(16px, calc(var(--sec-gutter) * var(--px)));
 }
 
-.cluster,
 .body {
   display: grid;
   place-items: center;
@@ -10,11 +9,6 @@
   border-radius: 12px;
   color: rgb(25 25 25 / 0.45);
   font-size: 14px;
-}
-
-.cluster {
-  height: calc(var(--cluster-h) * var(--px));
-  min-height: 200px;
 }
 
 .title {

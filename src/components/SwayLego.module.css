@@ -1,0 +1,40 @@
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: var(--frame-aspect);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.block {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  animation-name: sway;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.frame[data-paused='true'] .block {
+  animation-play-state: paused;
+}
+
+/* Xoay qua lại ±--sway-rotate và nhấp nhô --sway-bob px (theo khổ thiết kế). */
+@keyframes sway {
+  0%,
+  100% {
+    transform: translateY(0) rotate(calc(var(--sway-rotate) * -1));
+  }
+  50% {
+    transform: translateY(calc(var(--sway-bob) * var(--px) * -1)) rotate(var(--sway-rotate));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block {
+    animation: none;
+  }
+}

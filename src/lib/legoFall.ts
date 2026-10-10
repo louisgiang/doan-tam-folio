@@ -29,6 +29,8 @@ export interface FallBlockInput {
   y: number; // % chiều cao khung
   w: number; // % chiều rộng khung
   aspect: number; // cao / rộng của ảnh
+  /** Ẩn trong lượt rơi đầu (chỉ xuất hiện từ lượt sau). */
+  hiddenFirstPass?: boolean;
 }
 
 export interface FallBlock {
@@ -46,6 +48,7 @@ export interface FallBlock {
   spawn: number;
   /** Tâm khi mờ hẳn. */
   fadeEnd: number;
+  hiddenFirstPass: boolean;
 }
 
 export interface TextLine {
@@ -82,6 +85,7 @@ export function prepareBlocks(
       spin,
       spawn: -h / 2 - cfg.respawnGap,
       fadeEnd: Math.max(frame.height * cfg.fadeEnd, c0 + 1),
+      hiddenFirstPass: !!b.hiddenFirstPass,
     };
   });
 }
@@ -141,7 +145,7 @@ export function blockState(
   frameHeight: number,
   cfg: FallConfig,
 ): BlockState {
-  if (t <= 0) return { dy: 0, rotate: 0, opacity: 1, c: b.c0, pass: 0 };
+  if (t <= 0) return { dy: 0, rotate: 0, opacity: b.hiddenFirstPass ? 0 : 1, c: b.c0, pass: 0 };
   const tau = cfg.accelTime;
   // Thời gian "đã tính gia tốc": quãng rơi = v·(t − τ(1 − e^(−t/τ))),
   // tức nhanh dần lúc đầu rồi giữ vận tốc giới hạn.
@@ -159,7 +163,9 @@ export function blockState(
   const fadeStartY = frameHeight * cfg.fadeStart;
 
   let opacity: number;
-  if (pass === 0) {
+  if (pass === 0 && b.hiddenFirstPass) {
+    opacity = 0;
+  } else if (pass === 0) {
     // Lượt đầu: khối bắt đầu rõ nét ở đúng chỗ thiết kế, mờ dần từ đó.
     const start = Math.min(Math.max(fadeStartY, b.c0), b.fadeEnd - 1);
     opacity = 1 - smooth((c - start) / (b.fadeEnd - start));
