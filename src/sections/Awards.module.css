@@ -64,7 +64,7 @@
 
 .org {
   top: calc((1183.5 - var(--o)) * var(--px));
-  font-size: max(12px, calc(16 * var(--px)));
+  font-size: max(13px, calc(16 * var(--px)));
   font-style: italic;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -411,6 +411,10 @@
 
   .tagline {
     margin-top: 4px;
+  }
+
+  .org {
+    font-size: 14px;
   }
 
   .icanFrame,

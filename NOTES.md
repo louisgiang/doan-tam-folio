@@ -185,3 +185,4 @@
 - Lỗi chính tả giữ nguyên theo nguồn: "sustainbility", "ranked  in".
 - Tên cuộc thi gạch chân trong AWARDS chưa có link.
 - Đối chiếu toàn bộ chữ trong `content/` với bản gốc.
+- Kiểm tra thêm (sau khi push lần đầu): 360, 430, 820, 912, 1024, 1180 — không chồng lấn, không cuộn ngang ở cả 5 phần. Sửa: tên cuộc thi (AWARDS) quá nhỏ → tối thiểu 13px trên khổ máy tính, 14px dưới 1024px.
