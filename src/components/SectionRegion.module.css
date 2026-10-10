@@ -1,0 +1,8 @@
+.region {
+  position: relative;
+}
+
+/* Chỉ cắt nội dung khi đang giãn/thu; lúc đã mở để lego lớn được tràn mép như thiết kế. */
+.clip[data-animating] {
+  overflow: hidden;
+}
