@@ -1,0 +1,59 @@
+{
+  "lego-1": {
+    "aspect": 0.9921
+  },
+  "lego-2": {
+    "aspect": 0.8547
+  },
+  "lego-3": {
+    "aspect": 0.8503
+  },
+  "lego-4": {
+    "aspect": 1.0945
+  },
+  "lego-5": {
+    "aspect": 0.7338
+  },
+  "lego-6": {
+    "aspect": 0.8898
+  },
+  "lego-7": {
+    "aspect": 0.9741
+  },
+  "lego-8": {
+    "aspect": 1.0018
+  },
+  "lego-9": {
+    "aspect": 0.814
+  },
+  "lego-10": {
+    "aspect": 0.9929
+  },
+  "lego-11": {
+    "aspect": 0.816
+  },
+  "lego-12": {
+    "aspect": 0.9375
+  },
+  "lego-13": {
+    "aspect": 0.9333
+  },
+  "lego-14": {
+    "aspect": 0.9327
+  },
+  "lego-15": {
+    "aspect": 0.9435
+  },
+  "lego-17": {
+    "aspect": 0.9738
+  },
+  "lego-21": {
+    "aspect": 0.932
+  },
+  "lego-35": {
+    "aspect": 0.9738
+  },
+  "lego-36": {
+    "aspect": 0.8061
+  }
+}

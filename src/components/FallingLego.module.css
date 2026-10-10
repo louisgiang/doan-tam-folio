@@ -1,0 +1,18 @@
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Mặc định đúng tỉ lệ khung thiết kế; nơi dùng có thể đặt height riêng để co khung. */
+  aspect-ratio: var(--frame-aspect);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.block {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  will-change: transform, opacity;
+}

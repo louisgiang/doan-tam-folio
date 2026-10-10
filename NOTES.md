@@ -52,3 +52,33 @@
 
 ### Chữ
 - Chữ đang được chép từ ảnh design-ref (theo quyết định sau bước 1). Bước 2 mới dùng tiêu đề + đoạn mô tả HOME; toàn bộ chữ sẽ chép vào `content/` ở các bước sau để đối chiếu.
+
+## Bước 3 — HOME + lego rơi vô tận
+
+### Dữ liệu lego
+- Vị trí 37 khối HOME đo tự động từ `design-ref/Home.png` bằng `scripts/measure-lego.mjs` (tách khối khỏi nền, so khớp với 19 loại ảnh). Sai số khớp mọi khối < 3/255; 3 vùng chữ "MY WORLD." lọt vào vùng đo đã bị loại tự động (sai số > 10).
+  Lệnh tạo lại: `node scripts/measure-lego.mjs figma-export/design-ref/Home.png src/data/lego-home.json --region 0,66,1440,962 --exclude 70,700,530,140 --exclude 70,820,1000,210`
+- Khung cụm HOME: 1440 × 753 (từ dưới dải menu tới đáy khối thấp nhất).
+- Hầu hết khối trong Figma có tỉ lệ đúng 1/4 file ảnh; riêng loại lego-9 (×0.315) và lego-11 (×0.198) được phóng/thu khác — đã giữ đúng như thiết kế.
+- Ảnh lego chuyển sang WebP bằng `scripts/optimize-images.mjs`: 19 ảnh, ~240KB tổng (gốc ~2MB). File trùng nội dung gộp lại, đặt tên theo số nhỏ nhất (vd. lego-2 = 2, 16, 27, 33, 37, 38).
+
+### Chuyển động (thông số trong `src/data/lego-motion.ts`, toán trong `src/lib/legoFall.ts`)
+- **Chu kỳ chung:** mọi khối dùng chung một chu kỳ (HOME ≈ 13.5s). Mỗi khối rơi với tốc độ riêng; rơi hết vùng thì chờ ẩn phía trên khung tới lượt sau. Lý do: thử phương án mỗi khối một chu kỳ riêng thì sau vài phút các khối lệch pha ngẫu nhiên → lúc thưa lúc dồn cục (trái BRIEF). Với chu kỳ chung, bố cục thiết kế lặp lại đúng sau mỗi chu kỳ.
+- Tốc độ = tốc độ nền × (quãng rơi của khối / quãng dài nhất) × hệ số kích thước (khối nhỏ nhất 0.88) × ngẫu nhiên ±5%. Khối nằm trên tiêu đề có quãng ngắn hơn nên rơi chậm hơn.
+- **Tránh chữ:** khối nằm thẳng trên một dòng tiêu đề phải mờ hẳn khi mép dưới phần có hình còn cách dòng chữ 4px (đo vị trí dòng chữ thật lúc chạy, tự đo lại khi đổi cỡ màn hình). Khối khác mờ hẳn ở đáy vùng lego.
+- Lượt đầu: khối bắt đầu rõ nét đúng chỗ thiết kế, đứng yên 0.9s rồi mới rơi; khối nằm sát ngay trên chữ (vd. khối cam nhỏ trên "WORLD") mờ đi trong vài pixel đầu.
+- Xoay: tối đa 3°/giây, góc đặt lại mỗi lượt (lúc khối đang ẩn) để không bị lật ngược sau nhiều vòng.
+- Tạm dừng: ra khỏi màn hình (IntersectionObserver), chuyển tab. `prefers-reduced-motion`: đứng yên.
+
+### Kiểm tra bằng mô phỏng (`scripts/simulate-fall.ts`, 3 phút, 60Hz)
+- Không khối nào chạm vùng chữ khi còn nhìn thấy (opacity lớn nhất khi chạm = 0).
+- Sau 15s: tổng số khối rõ (opacity > 0.3) 22–33 trong 90% thời gian; mỗi 1/4 cột luôn có 4–10 khối.
+- Opacity thay đổi tối đa 0.069 mỗi khung hình (không bật/tắt đột ngột).
+
+### Chỉnh sau góp ý (bước 3, lần 2)
+- **Vùng lego HOME co theo chiều cao màn hình** (chủ dự án chọn) để tiêu đề + mô tả luôn nằm trọn trong màn hình đầu tiên. Vùng lego = 100svh − menu − 2 dòng tiêu đề − mô tả − khoảng thở; tối đa bằng thiết kế (639.5px ở 1440), tối thiểu một nửa thiết kế.
+  Khi khung co còn k lần, **cả khối lego cũng co k lần** (giữ tâm ngang) và vận tốc giảm k lần — để quan hệ trên–dưới giữa lego và tiêu đề giống hệt thiết kế (nếu chỉ nén vị trí mà giữ cỡ khối thì khối hàng dưới đè lên tiêu đề ngay từ đầu — mô phỏng đã bắt được lỗi này). Ví dụ 1440×900: k ≈ 0.73; 1920×1080: k ≈ 0.7; màn đủ cao: k = 1, đúng thiết kế.
+- **Mờ muộn hơn:** `fadeStart` 0.5 → 0.68 (chủ dự án thấy mờ hơi sớm). 1/3 dưới vùng lego giờ trung bình 4.4 khối rõ (trước 2.6). Vẫn không chạm chữ ở cả khung thiết kế lẫn khung co.
+
+### Ghi chú
+- Điện thoại: chưa xử lý (bước 6).

@@ -179,7 +179,8 @@ export function SectionNavProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
     const initial = hashToTarget(window.location.hash);
-    if (initial) go(initial);
+    // Lùi sang microtask: không gọi flushSync ngay trong effect.
+    if (initial) queueMicrotask(() => go(initial));
     const onPop = () => go(hashToTarget(window.location.hash));
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
