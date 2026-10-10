@@ -141,7 +141,12 @@ export function Awards() {
       {/* ---------- Khối hồng: ADDITIONAL STUDIES ---------- */}
       <section className={styles.pinkBlock}>
         {/* Cụm lego đáy dùng chung; ở AWARDS khung lệch (0, 462) so với mép trên khối hồng. */}
-        <SwayLego cluster={legoFooter as LegoCluster} offsetX={0} offsetY={462} />
+        <SwayLego
+          cluster={legoFooter as LegoCluster}
+          offsetX={0}
+          offsetY={462}
+          className={styles.footerLego}
+        />
         <h3 className={`display ${styles.addlHead}`}>ADDITIONAL STUDIES</h3>
         <div className={`${styles.study} ${styles.studyLeft}`}>
           <p className={styles.strongUp}>

@@ -2,8 +2,9 @@
   position: absolute;
   /* Lớp xếp chồng riêng: thứ tự lớp của từng khối không lọt ra ngoài (lego luôn nằm dưới chữ/ảnh). */
   z-index: 0;
-  top: 0;
-  left: 0;
+  /* Vị trí theo thiết kế (px ở khổ 1440); nơi dùng có thể ghi đè (vd. bố cục điện thoại). */
+  top: calc(var(--offset-y, 0) * var(--px));
+  left: calc(var(--offset-x, 0) * var(--px));
   width: 100%;
   aspect-ratio: var(--frame-aspect);
   overflow: hidden;

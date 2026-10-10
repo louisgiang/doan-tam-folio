@@ -69,6 +69,7 @@ export function FallingLego({
     let scale = 1;
     let frameH = FH;
     let period = 1;
+    let offscreen: boolean[] = [];
 
     // Lego phải mờ hẳn trước dòng chữ nằm ngay bên dưới cột của nó.
     const measure = () => {
@@ -98,6 +99,18 @@ export function FallingLego({
       }
       applyTextLines(blocks, lines, frameH, FALL);
       period = finalizeSpeeds(blocks, cfg(k));
+
+      // Khối nằm ngoài chiều ngang màn hình (vd. điện thoại: khung 720px bị cắt hai bên)
+      // thì ẩn hẳn và không tính chuyển động.
+      const viewW = document.documentElement.clientWidth;
+      offscreen = blocks.map((b) => {
+        const left = fr.left + b.x * scale;
+        return left + b.w * scale < 0 || left > viewW;
+      });
+      offscreen.forEach((off, i) => {
+        const el = blockRefs.current[i];
+        if (el) el.style.visibility = off ? 'hidden' : '';
+      });
     };
     measure();
     measureRef.current = measure;
@@ -105,7 +118,7 @@ export function FallingLego({
     const render = (t: number) => {
       blocks.forEach((b, i) => {
         const el = blockRefs.current[i];
-        if (!el) return;
+        if (!el || offscreen[i]) return;
         const s = blockState(b, t, period, frameH, FALL);
         el.style.transform = `translate3d(0, ${(s.dy * scale).toFixed(2)}px, 0) rotate(${s.rotate.toFixed(2)}deg)`;
         el.style.opacity = s.opacity.toFixed(3);

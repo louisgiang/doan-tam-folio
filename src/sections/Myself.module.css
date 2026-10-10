@@ -95,16 +95,17 @@
     translate 250ms ease;
 }
 
+/* Theo % của hộp chung (649.3 × 645.6) để dùng được cả khi hộp đổi cỡ (điện thoại). */
 .brick {
-  left: calc(28.8 * var(--px));
-  top: calc(34.1 * var(--px));
-  width: calc(620.5 * var(--px));
+  left: calc(28.8 / 649.3 * 100%);
+  top: calc(34.1 / 645.6 * 100%);
+  width: calc(620.5 / 649.3 * 100%);
 }
 
 .photo {
   left: 0;
   top: 0;
-  width: calc(645.7 * var(--px));
+  width: calc(645.7 / 649.3 * 100%);
 }
 
 /* Hình đang ẩn: thu nhỏ + mờ nhoè + trong suốt. */
@@ -231,4 +232,111 @@
 .side:focus-visible {
   outline: 2px solid var(--c-yellow);
   outline-offset: 6px;
+}
+
+/* ---------- Dưới 1024px: xếp dọc ---------- */
+@media (max-width: 1023px) {
+  .about {
+    height: auto;
+    padding-bottom: 32px;
+  }
+
+  .intro {
+    width: auto;
+    max-width: 640px;
+    margin-top: 32px;
+  }
+
+  .facts {
+    margin-top: 1.2em;
+  }
+
+  .school {
+    margin-top: 0.6em;
+  }
+
+  .gap1 {
+    width: 0.5em;
+  }
+  .gap2 {
+    width: 1.2em;
+  }
+
+  /* Khối lego/ảnh nằm dưới phần giới thiệu, đè nhẹ lên mép khối xanh như thiết kế. */
+  .flip {
+    position: relative;
+    display: block;
+    left: auto;
+    top: auto;
+    width: min(100%, 460px);
+    height: auto;
+    aspect-ratio: 649.3 / 645.6;
+    margin: 24px auto -14%;
+  }
+
+  .sides {
+    height: auto;
+    /* chừa chỗ cho cụm lego đáy (hiện ~580/700 khung, như thiết kế) */
+    padding: 72px var(--gutter) calc(560 * var(--px) + 40px);
+  }
+
+  .sidesTitle {
+    position: relative;
+    left: auto;
+    top: auto;
+    font-size: clamp(32px, 6vw, 48px);
+  }
+
+  .sideList {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 32px;
+    margin-top: 40px;
+  }
+
+  .sideList li {
+    position: static;
+  }
+
+  .sideTitle {
+    font-size: clamp(24px, 4.5vw, 36px);
+  }
+
+  .arrow {
+    height: 12px;
+    margin-top: 12px;
+  }
+
+  /* Cụm lego đáy bám mép dưới khối xanh (thiết kế cắt 121/700 phần dưới khung). */
+  .sides .footerLego {
+    top: auto;
+    bottom: calc(-121 * var(--px));
+  }
+}
+
+@media (max-width: 767px) {
+  .flip {
+    margin-bottom: -18%;
+  }
+
+  .sides {
+    padding-top: 64px;
+    padding-bottom: calc(560px * 0.5 + 24px);
+  }
+
+  .sideList {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Điện thoại: cụm lego đáy vẽ ở 50% cỡ thiết kế (720px), cắt bớt hai bên — đồng bộ với cụm trên cùng. */
+@media (max-width: 767px) {
+  .sides .footerLego {
+    width: 720px;
+    left: calc(50% - 360px) !important;
+    bottom: calc(-121px * 0.5);
+  }
 }

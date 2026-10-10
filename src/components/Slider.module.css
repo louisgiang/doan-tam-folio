@@ -39,6 +39,17 @@
   transition: background-color 200ms ease;
 }
 
+/* Vùng chạm rộng hơn chấm (dễ bấm trên điện thoại). */
+.dot {
+  position: relative;
+}
+
+.dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px -3px;
+}
+
 .dot[aria-current='true'] {
   background: var(--c-blue);
 }

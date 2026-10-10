@@ -13,10 +13,11 @@
   height: 100%;
 }
 
+/* Video 16:9 lấp đầy khung thiết kế 661×404 (cắt ~4% mỗi bên); toàn màn hình vẫn đủ khung hình. */
 .media {
   border: 0;
   background: #000;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .cover {

@@ -84,3 +84,77 @@
   width: calc(661 * var(--px));
   aspect-ratio: 661 / 404;
 }
+
+/* ---------- Dưới 1024px: xếp dọc ---------- */
+@media (max-width: 1023px) {
+  .lego {
+    height: auto;
+    padding: 0 var(--gutter) calc(420 * var(--px) + 40px);
+  }
+
+  .title {
+    padding-inline: 0;
+  }
+
+  .f1,
+  .text,
+  .videos {
+    position: relative;
+    left: auto;
+    top: auto;
+  }
+
+  .f1 {
+    width: 100%;
+    max-width: 640px;
+    margin-top: 32px;
+  }
+
+  .f1 figcaption {
+    margin-top: 10px;
+  }
+
+  .text {
+    width: auto;
+    max-width: 640px;
+    margin-top: 32px;
+    text-align: left;
+  }
+
+  .videos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .video {
+    width: 100%;
+  }
+
+  /* Cụm lego đáy bám mép dưới phần (thiết kế cắt 8/700 phần dưới khung). */
+  .lego .footerLego {
+    top: auto;
+    bottom: calc(-8 * var(--px));
+  }
+}
+
+@media (max-width: 767px) {
+  .lego {
+    padding-bottom: calc(420px * 0.5 + 24px);
+  }
+
+
+  .videos {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Điện thoại: cụm lego đáy vẽ ở 50% cỡ thiết kế (720px), cắt bớt hai bên — đồng bộ với cụm trên cùng. */
+@media (max-width: 767px) {
+  .lego .footerLego {
+    width: 720px;
+    left: calc(50% - 360px) !important;
+    bottom: calc(-8px * 0.5);
+  }
+}

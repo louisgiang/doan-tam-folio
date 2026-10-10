@@ -140,3 +140,48 @@
 - Khung ICAN: nền #FAF5D4, ảnh chứng nhận dọc đặt lệch trái như thiết kế (không căn giữa).
 - Thẻ 1 ("Honor Award") trong thiết kế cao hơn 3 thẻ còn lại 2.7px → căn thẳng hàng cả bốn.
 - Cột phải "Additional studies": vị trí quy đổi từ ảnh chủ dự án gửi (x 740.5, rộng 645, cùng hàng với cột trái); đường kẻ dọc x 718, cao 247.8.
+
+## Bước 6 — Bố cục điện thoại / máy tính bảng
+
+### Điểm chia
+- **≥ 1024px:** bố cục thiết kế (đặt tuyệt đối), co giãn đúng tỉ lệ khổ 1440. Cỡ chữ nội dung **không có mức tối thiểu** ở khoảng này (1024 → 14.2px, 1366 → 19px) để chữ xuống dòng giống hệt thiết kế, không đè lên ảnh bên dưới.
+- **768–1023px (máy tính bảng):** xếp dọc theo luồng, lề 32px, chữ 16px; các cặp khối (Aria/LotusMed, Green/EcoWander, hai giải vàng, 4 thẻ giải phụ, bốn mục "Meet four sides", hai video) xếp 2 cột.
+- **< 768px (điện thoại):** một cột, lề 16px, tiêu đề lớn 40–48px (BRIEF), menu ☰.
+- Dưới 1024px chữ thân bài **căn trái** (căn đều trong cột hẹp tạo khoảng trắng lớn giữa các từ).
+
+### Lego trên điện thoại
+- Cụm lego trên cùng và cụm lego đáy vẽ ở **50% cỡ thiết kế** (khung 720px) và cắt bớt hai bên, để khối không bé quá (nếu co theo chiều rộng 375px thì khối chỉ còn ~25%).
+- **Tiêu chí giảm tải:** khối nào nằm hoàn toàn ngoài chiều ngang màn hình thì ẩn và không tính chuyển động (ở 375px: 13/40 khối). Không giảm thêm số khối nhìn thấy. Chưa thử trên máy thật — nếu điện thoại cũ vẫn giật, có thể ẩn thêm khối theo thứ tự lớp.
+- Khối lego lớn ↔ ảnh (MYSELF): nằm dưới phần giới thiệu, rộng tối đa 460px, vẫn đè nhẹ lên mép khối xanh.
+
+### Đã kiểm tra
+- 375, 768, 1024, 1366, 1920: không cuộn ngang; script dò chồng lấn (chữ/ảnh/nút) không thấy chỗ đè nào, trừ hộp bấm trong suốt của khối lego lớn MYSELF phủ lên cuối vài dòng giới thiệu (giống thiết kế, phần đó của ảnh trong suốt).
+- Chấm slider: vùng chạm rộng hơn chấm (dễ bấm trên điện thoại).
+
+## Video phần LEGO
+
+- Nguồn chủ dự án gửi: `figma-export/assets/public-video/left.mp4` (787MB, 5:35, 960×540, 120fps, không tiếng) và `right.MOV` (65MB, 0:34, HEVC 1920×1080, gắn cờ xoay 180°, không tiếng). Cả hai vượt mức 25MB của BRIEF → đã nén bằng ffmpeg (gói `ffmpeg-static`, devDependency). **Thư mục video gốc được loại khỏi git** (.gitignore) — giữ bản gốc ở máy.
+- `public/videos/right.mp4`: H.264 High, 1280×720, 30fps, CRF 24, faststart → 14.2MB. Đã xoay đúng chiều (khớp ảnh bìa).
+- `public/videos/left.mp4`: H.264 High, giữ 960×540, giảm 120 → 30fps, nén 2 lượt **1100kbps** (tối đa 1800kbps), faststart → **46.2MB**. Bản đầu (520kbps, 21.9MB, đúng mức 25MB của BRIEF) bị vỡ khối khi tay chuyển động nhanh → **chủ dự án đồng ý vượt mức 25MB** (giữ dưới 50MB để GitHub không cảnh báo). Đã thử Vimeo: video đang để riêng tư nên không nhúng được, và có thể không ẩn được thanh phát Vimeo ở gói miễn phí → giữ file trong dự án.
+- Đối chiếu khung hình: left ↔ ảnh bìa 1 ("Skyflow"), right ↔ ảnh bìa 2 ("PLAY") — đúng thứ tự trái/phải.
+- Video 16:9 hơi rộng hơn khung thiết kế 661×404 (1.64:1) → hiển thị `object-fit: cover` (cắt ~4% mỗi bên), chế độ toàn màn hình vẫn đủ khung hình.
+- Chỉ phát khi bấm (đã thử bằng cú bấm chuột thật: phát ngay); `preload="none"`, `playsinline`, thanh điều khiển gốc của trình duyệt (play/pause, tua, âm lượng, toàn màn hình).
+- Lệnh tạo lại:
+  - right: `ffmpeg -i right.MOV -vf "scale=1280:-2,fps=30" -c:v libx264 -preset slow -crf 24 -profile:v high -pix_fmt yuv420p -movflags +faststart -an right.mp4`
+  - left (2 lượt): `ffmpeg -i left.mp4 -vf fps=30 -c:v libx264 -preset slow -b:v 1100k -pass 1 -an -f mp4 NUL` rồi `... -b:v 1100k -maxrate 1800k -bufsize 3600k -pass 2 -movflags +faststart -an left_out.mp4`
+
+## Bước 7 — Kiểm tra cuối (2026-10-11)
+
+- `npm run build` (bản sạch): không lỗi, không cảnh báo.
+- **Dung lượng `dist/`: 61MB**, trong đó video 60MB (`left.mp4` 44MB, `right.mp4` 13.5MB); phần còn lại **3MB**. JS 180KB (gzip ~61KB), CSS ~19KB. Ảnh nặng nhất: `ecowander-one-project-two-ways-to-act-1.webp` 497KB; sau đó avatar 272KB, ARIA 205KB, big-lego 179KB.
+- Bố cục: 375 / 768 / 1024 / 1366 / 1440 / 1920 — không cuộn ngang; script dò chồng lấn chữ/ảnh: 0 chỗ đè (ở 1440 kiểm tra cả 5 phần).
+- Điều hướng: menu mở đúng phần + đổi màu mục menu; nút Back của trình duyệt; mở link có `#awards`, `#lego`; bấm HOME; 4 mục trong khối "Meet four sides".
+- Lego: chỉ cụm đầu trang rơi (mô phỏng 3 phút: không chạm chữ, mật độ 22–33 khối rõ, không bật/tắt đột ngột); lego đáy chỉ đung đưa; cụm rơi dừng khi cuộn đi (đã xác nhận: transform đứng yên khi ở cuối trang, chạy lại khi về đầu), lego đáy dừng khi ra khỏi màn hình.
+- Video: không tự phát; chỉ phát khi bấm (đã thử bằng cú bấm chuột thật cho cả hai).
+- **Chưa kiểm tra được:** độ mượt trên điện thoại thật; animation xem liên tục bằng mắt (khung trình duyệt của công cụ chỉ vẽ khi chụp màn hình).
+
+### Việc còn mở (chờ chủ dự án)
+- Dòng "Nearly 200 attendees · VND 60 million raised by the team" lặp ở ARIA và LOTUSMED.
+- Lỗi chính tả giữ nguyên theo nguồn: "sustainbility", "ranked  in".
+- Tên cuộc thi gạch chân trong AWARDS chưa có link.
+- Đối chiếu toàn bộ chữ trong `content/` với bản gốc.

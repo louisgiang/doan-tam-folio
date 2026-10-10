@@ -11,7 +11,12 @@ export function Lego() {
   return (
     <div className={styles.lego}>
       {/* Cụm lego đáy dùng chung; ở LEGO khung lệch (2, 843.3), một phần nằm sau video. */}
-      <SwayLego cluster={legoFooter as LegoCluster} offsetX={2} offsetY={843.3} />
+      <SwayLego
+        cluster={legoFooter as LegoCluster}
+        offsetX={2}
+        offsetY={843.3}
+        className={styles.footerLego}
+      />
 
       <h2 className={`display ${styles.title}`} data-lego-avoid>
         SMALL BRICKS.

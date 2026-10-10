@@ -75,6 +75,7 @@ export function Community() {
         </article>
       </div>
 
+      <div className={styles.afterMint}>
       <article className={`${styles.card} ${styles.greenClub}`}>
         <img className={styles.photo2} src={greenUrl} alt="Green School Club members" loading="lazy" />
         <h3 className={`display ${styles.head}`}>GREEN SCHOOL CLUB</h3>
@@ -127,6 +128,7 @@ export function Community() {
           </p>
         </div>
       </article>
+      </div>
     </div>
   );
 }

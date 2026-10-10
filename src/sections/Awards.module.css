@@ -370,3 +370,210 @@
   height: calc(247.8 * var(--px));
   background: var(--c-blue);
 }
+
+/* ---------- Dưới 1024px: xếp dọc ---------- */
+@media (max-width: 1023px) {
+  .awards {
+    height: auto;
+  }
+
+  .awards > *,
+  .award > *,
+  .blue > *,
+  .pinkBlock > *,
+  .honors li > * {
+    position: relative;
+    left: auto !important;
+    right: auto;
+    top: auto !important;
+    width: auto;
+  }
+
+  .title {
+    padding-inline: var(--gutter);
+    font-size: clamp(22px, 4vw, 34px);
+  }
+
+  /* Hai giải vàng: hai cột (máy tính bảng) / một cột (điện thoại). */
+  .award {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    width: 50%;
+    margin-top: 48px;
+    padding-inline: var(--gutter);
+  }
+
+  .awardHead {
+    font-size: clamp(20px, 3.4vw, 28px);
+    white-space: pre-wrap;
+  }
+
+  .tagline {
+    margin-top: 4px;
+  }
+
+  .icanFrame,
+  .icpcImg {
+    margin-top: 16px;
+    width: 100% !important;
+    height: auto;
+  }
+
+  .icanFrame {
+    aspect-ratio: 595.75 / 406.5;
+  }
+
+  .icanFrame img {
+    left: calc(134.5 / 595.75 * 100%);
+  }
+
+  /* Cột hẹp: căn trái để không bị khoảng trắng lớn giữa các từ. */
+  .award .awardBody,
+  .blueBody,
+  .study {
+    text-align: left;
+  }
+
+  .award .awardBody {
+    width: auto;
+    margin-top: 20px;
+  }
+
+  .blue {
+    margin-top: 56px;
+    height: auto;
+    padding: 48px var(--gutter);
+  }
+
+  .blueHead {
+    font-size: clamp(24px, 4.4vw, 36px);
+  }
+
+  .blueSub {
+    font-size: clamp(20px, 3.4vw, 28px);
+  }
+
+  .blueIntro {
+    margin-top: 16px;
+  }
+
+  .aigcImg {
+    width: min(100%, 348px) !important;
+    margin-top: 24px;
+  }
+
+  .blueBody {
+    margin-top: 24px;
+  }
+
+  .honorsHead {
+    margin-top: 64px;
+    padding-inline: var(--gutter);
+    font-size: clamp(28px, 5vw, 44px);
+  }
+
+  .honorsSub {
+    margin-top: 8px;
+    font-size: clamp(18px, 3vw, 24px);
+  }
+
+  .honors {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 24px;
+    margin-top: 40px;
+    padding: 0 var(--gutter) 64px;
+    pointer-events: auto;
+  }
+
+  .honors li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .honorImg {
+    width: 100% !important;
+    aspect-ratio: 1.356;
+    object-fit: cover;
+  }
+
+  .honorBar {
+    width: 100% !important;
+    height: 4px;
+    margin-top: 20px;
+  }
+
+  .year {
+    margin-top: 8px;
+    font-size: clamp(36px, 6vw, 52px);
+  }
+
+  .honorBox {
+    width: 100% !important;
+    height: auto;
+    margin-top: 8px;
+    padding: 20px 16px;
+  }
+
+  .honorBox p + p {
+    margin-top: 12px;
+  }
+
+  .pinkBlock {
+    height: auto;
+    padding: 56px var(--gutter) calc(470 * var(--px) + 40px);
+  }
+
+  .addlHead {
+    font-size: clamp(28px, 5vw, 44px);
+  }
+
+  .study {
+    width: auto !important;
+    margin-top: 32px;
+    font-size: var(--fs-body);
+  }
+
+  .divider {
+    display: block;
+    width: 100% !important;
+    height: 2px;
+    margin-top: 32px;
+  }
+
+  /* Cụm lego đáy bám mép dưới khối hồng (thiết kế cắt 104/700 phần dưới khung). */
+  .pinkBlock .footerLego {
+    position: absolute;
+    top: auto !important;
+    bottom: calc(-104 * var(--px));
+    left: 0 !important;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .pinkBlock {
+    padding-bottom: calc(470px * 0.5 + 24px);
+  }
+
+  .award {
+    display: block;
+    width: 100%;
+  }
+
+  .honors {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Điện thoại: cụm lego đáy vẽ ở 50% cỡ thiết kế (720px), cắt bớt hai bên — đồng bộ với cụm trên cùng. */
+@media (max-width: 767px) {
+  .pinkBlock .footerLego {
+    width: 720px;
+    left: calc(50% - 360px) !important;
+    bottom: calc(-104px * 0.5);
+  }
+}

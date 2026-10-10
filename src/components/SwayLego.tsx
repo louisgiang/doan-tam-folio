@@ -41,8 +41,8 @@ export function SwayLego({
       style={
         {
           '--frame-aspect': `${FW} / ${FH}`,
-          left: `calc(${offsetX} * var(--px))`,
-          top: `calc(${offsetY} * var(--px))`,
+          '--offset-x': offsetX,
+          '--offset-y': offsetY,
         } as CSSProperties
       }
       data-paused="true"

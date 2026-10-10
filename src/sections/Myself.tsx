@@ -71,7 +71,12 @@ export function Myself() {
       <div className={styles.sides}>
         <SwayLego cluster={legoBlue as LegoCluster} />
         {/* Cụm lego đáy dùng chung; ở MYSELF khung lệch (−11, 542) so với mép trên khối xanh. */}
-        <SwayLego cluster={legoFooter as LegoCluster} offsetX={-11} offsetY={542} />
+        <SwayLego
+          cluster={legoFooter as LegoCluster}
+          offsetX={-11}
+          offsetY={542}
+          className={styles.footerLego}
+        />
         <h3 className={`display ${styles.sidesTitle}`}>
           MEET FOUR SIDES
           <br />

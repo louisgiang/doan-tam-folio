@@ -151,3 +151,71 @@
   --body-top: 105.8;
   --body-w: 1275;
 }
+
+/* ---------- Dưới 1024px: xếp dọc ---------- */
+@media (max-width: 1023px) {
+  .community {
+    height: auto;
+    padding-bottom: 64px;
+  }
+
+  .title {
+    font-size: clamp(26px, 4.6vw, 40px);
+  }
+
+  .mint {
+    position: relative;
+    top: auto;
+    height: auto;
+    margin-top: 40px;
+    padding: 48px var(--gutter);
+  }
+
+  .mint,
+  .afterMint {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px 32px;
+  }
+
+  .afterMint {
+    padding: 56px var(--gutter) 0;
+  }
+
+  .card,
+  .card > * {
+    position: relative;
+    left: auto;
+    top: auto;
+  }
+
+  .photo,
+  .photo2 {
+    width: 100%;
+  }
+
+  .head {
+    width: auto;
+    margin-top: 20px;
+    font-size: clamp(20px, 3.2vw, 26px);
+  }
+
+  /* Cột hẹp: căn trái để không bị khoảng trắng lớn giữa các từ. */
+  .body {
+    width: auto;
+    margin-top: 16px;
+    text-align: left;
+  }
+
+  .daily {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .mint,
+  .afterMint {
+    grid-template-columns: 1fr;
+  }
+
+}

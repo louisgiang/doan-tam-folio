@@ -39,3 +39,20 @@
     transition: none;
   }
 }
+
+/*
+ * Điện thoại: cụm lego vẽ ở 50% cỡ thiết kế (720px) và cắt bớt hai bên, để khối không quá nhỏ;
+ * vùng tới tiêu đề cũng theo tỉ lệ 50%, không co theo chiều cao màn hình.
+ */
+@media (max-width: 767px) {
+  .region {
+    --lego-zone: calc(639.5px * 0.5);
+    overflow-x: clip;
+  }
+
+  .region .lego {
+    width: 720px;
+    left: calc(50% - 360px);
+    height: calc(753px * 0.5);
+  }
+}
