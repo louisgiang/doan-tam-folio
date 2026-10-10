@@ -48,5 +48,18 @@ await toWebp(path.join(SRC, 'myself/avatar.png'), path.join(OUT, 'myself/avatar.
   alphaQuality: 100,
 });
 
+// LEGO, COMMUNITY, AWARDS: ảnh hiển thị tối đa ~660px ở 1440 → ~1760px ở 1920 @2x.
+const slug = (name) =>
+  name
+    .replace(/\.png$/, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+for (const dir of ['lego-page', 'community', 'awards']) {
+  for (const f of fs.readdirSync(path.join(SRC, dir)).filter((f) => f.endsWith('.png'))) {
+    await toWebp(path.join(SRC, dir, f), path.join(OUT, dir, `${slug(f)}.webp`), { maxWidth: 1800 });
+  }
+}
+
 for (const [file, before, after, w, h] of report)
   console.log(file.padEnd(40), `${(before / 1024).toFixed(0)}KB -> ${(after / 1024).toFixed(0)}KB`, `${w}x${h}`);

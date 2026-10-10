@@ -1,5 +1,6 @@
 {
   "source": "myself 1.png",
+  "note": "Chỉ khối tím cạnh tiêu đề; lego đáy dùng lego-footer.json.",
   "frame": {
     "width": 1440,
     "height": 1121
@@ -12,95 +13,6 @@
       "w": 15.292,
       "rotation": 0,
       "z": 1
-    },
-    {
-      "type": "lego-11",
-      "x": 3.625,
-      "y": 58.921,
-      "w": 15.59,
-      "rotation": 0,
-      "z": 2
-    },
-    {
-      "type": "lego-14",
-      "x": 81.868,
-      "y": 59.188,
-      "w": 11.708,
-      "rotation": 0,
-      "z": 3
-    },
-    {
-      "type": "lego-3",
-      "x": 40.465,
-      "y": 59.92,
-      "w": 17.958,
-      "rotation": 0,
-      "z": 4
-    },
-    {
-      "type": "lego-4",
-      "x": 23.688,
-      "y": 64.906,
-      "w": 13.153,
-      "rotation": 0,
-      "z": 5
-    },
-    {
-      "type": "lego-5",
-      "x": 62.674,
-      "y": 67.172,
-      "w": 19.236,
-      "rotation": 0,
-      "z": 6
-    },
-    {
-      "type": "lego-2",
-      "x": 9.701,
-      "y": 76.2,
-      "w": 11.854,
-      "rotation": 0,
-      "z": 7
-    },
-    {
-      "type": "lego-21",
-      "x": 50.34,
-      "y": 80.5,
-      "w": 11.715,
-      "rotation": 0,
-      "z": 8
-    },
-    {
-      "type": "lego-11",
-      "x": 76.681,
-      "y": 85.058,
-      "w": 15.59,
-      "rotation": 0,
-      "z": 9
-    },
-    {
-      "type": "lego-6",
-      "x": 30.806,
-      "y": 85.352,
-      "w": 15.451,
-      "rotation": 0,
-      "z": 10
-    },
-    {
-      "type": "lego-1",
-      "x": 5.597,
-      "y": 91.9,
-      "w": 14.042,
-      "rotation": 0,
-      "z": 11
-    },
-    {
-      "type": "lego-13",
-      "x": 55.771,
-      "y": 96.503,
-      "w": 12.833,
-      "rotation": 0,
-      "z": 12
     }
-  ],
-  "note": "Khối lego-13 cuối cùng (chỉ lộ núm ở mép dưới) đặt thủ công."
+  ]
 }

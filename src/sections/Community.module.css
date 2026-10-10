@@ -1,0 +1,153 @@
+/*
+ * Số đo từ design-ref/community.png, khổ 1440, gốc = đầu dòng tiêu đề (y=817 trên ảnh).
+ * Phần cao 3388 − 817 = 2571. Mỗi khối dự án đặt tuyệt đối; bên trong: ảnh ở đỉnh,
+ * tiêu đề và khối chữ đặt theo khoảng cách đo được (--head-top, --body-top).
+ */
+.community {
+  position: relative;
+  height: calc(2571 * var(--px));
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  padding-inline: var(--gutter);
+  font-size: max(28px, calc(64 * var(--px)));
+}
+
+.green {
+  color: var(--c-green);
+}
+
+.mint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(265 * var(--px));
+  height: calc(983 * var(--px));
+  background: var(--c-mint);
+}
+
+.card {
+  position: absolute;
+  left: calc(var(--x) * var(--px));
+  top: calc(var(--y) * var(--px));
+}
+
+.card > * {
+  position: absolute;
+}
+
+.photo,
+.photo2 {
+  top: 0;
+  max-width: none;
+  left: calc(var(--photo-x, 0) * var(--px));
+  width: calc(var(--photo-w) * var(--px));
+}
+
+.photo {
+  aspect-ratio: 599.5 / 367.5;
+  object-fit: cover;
+}
+
+.photo2:is(img) {
+  aspect-ratio: 598 / 375;
+  object-fit: cover;
+}
+
+.head {
+  top: calc(var(--head-top) * var(--px));
+  left: calc(var(--head-x, 1.5) * var(--px));
+  width: max-content;
+  font-size: max(18px, calc(32 * var(--px)));
+  color: var(--c-text);
+}
+
+.headLight {
+  color: var(--c-bg);
+}
+
+.body {
+  top: calc(var(--body-top) * var(--px));
+  left: calc(var(--body-x, 0) * var(--px));
+  width: calc(var(--body-w) * var(--px));
+  font-size: var(--fs-body);
+  line-height: 1.172;
+  text-align: justify;
+  color: var(--c-blue);
+}
+
+/* Các đoạn cách nhau một dòng trống. */
+.body p + p {
+  margin-top: 1.172em;
+}
+
+.body strong {
+  font-weight: 700;
+}
+
+.meta {
+  font-weight: 700;
+  font-style: italic;
+  white-space: pre-wrap;
+  text-align: left;
+}
+
+.italic {
+  font-style: italic;
+}
+
+/* ---------- Vị trí từng khối ---------- */
+
+/* Hai khối trong nền xanh bạc hà: --y tính từ mép trên nền (265). */
+.aria {
+  --x: 81;
+  --y: 58;
+  --photo-w: 599.5;
+  --head-top: 387.4;
+  --body-top: 493.2;
+  --body-x: 0.3;
+  --body-w: 607;
+}
+
+.lotus {
+  --x: 758.3;
+  --y: 57.5;
+  --photo-x: 3.7;
+  --photo-w: 599;
+  --head-top: 385.9;
+  --body-top: 491.7;
+  --body-w: 607;
+}
+
+.greenClub {
+  --x: 79.5;
+  --y: 1378.5;
+  --photo-w: 598;
+  --head-top: 398.2;
+  --head-x: 3;
+  --body-top: 504;
+  --body-x: 1.3;
+  --body-w: 608;
+}
+
+.eco {
+  --x: 757.5;
+  --y: 1378.5;
+  --photo-w: 598;
+  --head-top: 432.8;
+  --head-x: 2;
+  --body-top: 531;
+  --body-x: 0.3;
+  --body-w: 597;
+}
+
+.daily {
+  --x: 80;
+  --y: 2198.7;
+  --head-top: 0;
+  --head-x: 2.8;
+  --body-top: 105.8;
+  --body-w: 1275;
+}

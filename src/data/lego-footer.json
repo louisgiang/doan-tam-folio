@@ -1,0 +1,136 @@
+{
+  "source": "awards.png + Lego.png + myself 1.png (gộp)",
+  "note": "Cụm lego đáy dùng chung cho MYSELF (khối xanh), LEGO, AWARDS. Mỗi phần đặt khung với độ lệch riêng (xem NOTES).",
+  "frame": {
+    "width": 1440,
+    "height": 700
+  },
+  "blocks": [
+    {
+      "type": "lego-21",
+      "x": 82.632,
+      "y": 16.057,
+      "w": 11.715,
+      "rotation": 0,
+      "z": 1,
+      "from": "awards"
+    },
+    {
+      "type": "lego-9",
+      "x": 4.382,
+      "y": 17.043,
+      "w": 15.59,
+      "rotation": 0,
+      "z": 2,
+      "from": "awards"
+    },
+    {
+      "type": "lego-3",
+      "x": 41.229,
+      "y": 18.529,
+      "w": 17.958,
+      "rotation": 0,
+      "z": 3,
+      "from": "myself (awards bị tách đôi vì khối tím hồng gần màu nền hồng)"
+    },
+    {
+      "type": "lego-4",
+      "x": 24.451,
+      "y": 26.371,
+      "w": 13.153,
+      "rotation": 0,
+      "z": 4,
+      "from": "awards"
+    },
+    {
+      "type": "lego-5",
+      "x": 63.438,
+      "y": 30.143,
+      "w": 19.236,
+      "rotation": 0,
+      "z": 5,
+      "from": "awards"
+    },
+    {
+      "type": "lego-2",
+      "x": 10.542,
+      "y": 44.614,
+      "w": 11.778,
+      "rotation": 0,
+      "z": 6,
+      "from": "awards"
+    },
+    {
+      "type": "lego-21",
+      "x": 51.104,
+      "y": 51.486,
+      "w": 11.715,
+      "rotation": 0,
+      "z": 7,
+      "from": "awards"
+    },
+    {
+      "type": "lego-9",
+      "x": 77.437,
+      "y": 58.9,
+      "w": 15.59,
+      "rotation": 0,
+      "z": 8,
+      "from": "awards"
+    },
+    {
+      "type": "lego-6",
+      "x": 31.639,
+      "y": 59.271,
+      "w": 15.382,
+      "rotation": 0,
+      "z": 9,
+      "from": "awards"
+    },
+    {
+      "type": "lego-1",
+      "x": 6.347,
+      "y": 69.529,
+      "w": 15.111,
+      "rotation": 0,
+      "z": 10,
+      "from": "Lego (ít bị mép dưới cắt nhất)"
+    },
+    {
+      "type": "lego-13",
+      "x": 57.104,
+      "y": 77.671,
+      "w": 11.819,
+      "rotation": 0,
+      "z": 11,
+      "from": "Lego"
+    },
+    {
+      "type": "lego-13",
+      "x": 25.16,
+      "y": 84.814,
+      "w": 11.819,
+      "rotation": 0,
+      "z": 12,
+      "from": "Lego"
+    },
+    {
+      "type": "lego-13",
+      "x": 85.236,
+      "y": 96.143,
+      "w": 11.813,
+      "rotation": 0,
+      "z": 13,
+      "from": "Lego — chỉ lộ núm ở mép dưới, đặt theo núm (tỉ lệ 0.405)"
+    },
+    {
+      "type": "lego-2",
+      "x": 12.59,
+      "y": 96.343,
+      "w": 13,
+      "rotation": 0,
+      "z": 14,
+      "from": "Lego — chỉ lộ núm ở mép dưới, đặt theo núm (tỉ lệ 0.40, ước lượng)"
+    }
+  ]
+}

@@ -1,0 +1,372 @@
+/*
+ * Số đo từ design-ref/awards.png (+ awards-additional-studies.png cho cột phải "Additional studies"),
+ * khổ 1440. Toạ độ ghi theo ảnh thiết kế (Y), quy về gốc của phần = đầu dòng tiêu đề (y=816.8):
+ *   top: calc((Y − 816.8) * var(--px)). Phần cao 4846 − 816.8 = 4029.2.
+ */
+.awards {
+  --o: 816.8;
+  position: relative;
+  height: calc(4029.2 * var(--px));
+  color: var(--c-blue);
+  font-size: var(--fs-body);
+  line-height: 1.172;
+}
+
+.awards > *,
+.blue > *,
+.pinkBlock > * {
+  position: absolute;
+  margin: 0;
+}
+
+.strong {
+  font-weight: 700;
+}
+
+/* ---------- Tiêu đề (52px, lề trái 62px) ---------- */
+.title {
+  position: relative !important;
+  z-index: 1;
+  padding-left: max(16px, calc(62 * var(--px)));
+  font-size: max(26px, calc(52 * var(--px)));
+  color: var(--c-text);
+}
+
+.green {
+  color: var(--c-green);
+}
+
+/* ---------- Hai giải vàng ---------- */
+.award {
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.award > * {
+  position: absolute;
+  margin: 0;
+}
+
+.awardHead {
+  top: calc((1118.4 - var(--o)) * var(--px));
+  font-size: max(18px, calc(32 * var(--px)));
+  white-space: pre;
+}
+
+.tagline {
+  top: calc((1159.7 - var(--o)) * var(--px));
+  font-size: var(--fs-body);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--c-purple);
+}
+
+.org {
+  top: calc((1183.5 - var(--o)) * var(--px));
+  font-size: max(12px, calc(16 * var(--px)));
+  font-style: italic;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.awardBody {
+  top: calc((1680.5 - var(--o)) * var(--px));
+  font-style: italic;
+  text-align: justify;
+}
+
+.awardBody p + p,
+.blueBody p + p {
+  margin-top: 1.172em;
+}
+
+.study p + p {
+  margin-top: 1.302em;
+}
+
+.ican .awardHead {
+  left: calc(70 * var(--px));
+}
+.ican .tagline {
+  left: calc(72 * var(--px));
+}
+.ican .org {
+  left: calc(70 * var(--px));
+}
+.ican .awardBody {
+  left: calc(68.3 * var(--px));
+  width: calc(605 * var(--px));
+}
+
+/* Khung ICAN: nền vàng nhạt, ảnh chứng nhận (dọc) đặt lệch trái như thiết kế. */
+.icanFrame {
+  left: calc(69 * var(--px));
+  top: calc((1225.5 - var(--o)) * var(--px));
+  width: calc(595.75 * var(--px));
+  height: calc(406.5 * var(--px));
+  background: #faf5d4;
+}
+
+.icanFrame img {
+  position: absolute;
+  left: calc(134.5 * var(--px));
+  top: 0;
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+
+.icpc .awardHead {
+  left: calc(756 * var(--px));
+}
+.icpc .tagline {
+  left: calc(757 * var(--px));
+}
+.icpc .org {
+  left: calc(756 * var(--px));
+}
+.icpc .awardBody {
+  left: calc(759.3 * var(--px));
+  width: calc(603.7 * var(--px));
+}
+
+.icpcImg {
+  left: calc(759 * var(--px));
+  top: calc((1225.5 - var(--o)) * var(--px));
+  width: calc(601 * var(--px));
+  max-width: none;
+  aspect-ratio: 601 / 438;
+  object-fit: cover;
+}
+
+/* ---------- Khối xanh (y 2099–2880) ---------- */
+.blue {
+  left: 0;
+  right: 0;
+  top: calc((2099 - var(--o)) * var(--px));
+  height: calc(781 * var(--px));
+  background: var(--c-blue);
+  color: #fff;
+}
+
+.blueHead {
+  left: calc(70 * var(--px));
+  top: calc(45.9 * var(--px));
+  font-size: max(24px, calc(48 * var(--px)));
+  color: var(--c-bg);
+}
+
+.blueSub {
+  left: calc(69 * var(--px));
+  top: calc(103.9 * var(--px));
+  font-size: max(18px, calc(32 * var(--px)));
+  line-height: 1.2;
+  color: var(--c-purple);
+  white-space: pre;
+}
+
+.blueIntro {
+  left: calc(68.3 * var(--px));
+  top: calc(165.7 * var(--px));
+  font-style: italic;
+}
+
+.blueIntro strong {
+  font-weight: 700;
+}
+
+.aigcImg {
+  left: calc(68.5 * var(--px));
+  top: calc(241 * var(--px));
+  width: calc(348 * var(--px));
+  max-width: none;
+  aspect-ratio: 348 / 472;
+  object-fit: cover;
+}
+
+.blueBody {
+  left: calc(432.3 * var(--px));
+  top: calc(239.5 * var(--px));
+  width: calc(806.5 * var(--px));
+  font-style: italic;
+  text-align: justify;
+}
+
+.blueBody .strong {
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+/* ---------- OTHER HONORS & A SCHOLARSHIP ---------- */
+.honorsHead {
+  left: 0;
+  right: 0;
+  top: calc((2985.8 - var(--o)) * var(--px));
+  font-size: max(28px, calc(64 * var(--px)));
+  text-align: center;
+  color: var(--c-purple);
+}
+
+.honorsSub {
+  left: 0;
+  right: 0;
+  top: calc((3072.5 - var(--o)) * var(--px));
+  font-size: max(18px, calc(32 * var(--px)));
+  font-weight: 700;
+  font-style: italic;
+  text-align: center;
+}
+
+.honors {
+  inset: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.honors li {
+  position: absolute;
+  inset: 0;
+}
+
+.honors li > * {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.honorImg {
+  left: calc(var(--img-x) * var(--px));
+  top: calc((var(--img-y, 3197) - var(--o)) * var(--px));
+  width: calc(var(--img-w) * var(--px));
+  max-width: none;
+  height: auto;
+}
+
+.honorBar {
+  left: calc(var(--bar-x) * var(--px));
+  top: calc((3462 - var(--o)) * var(--px));
+  width: calc(var(--bar-w) * var(--px));
+  height: calc(4.3 * var(--px));
+  background: var(--c-blue);
+}
+
+.year {
+  left: calc(var(--year-x) * var(--px));
+  top: calc((3481.7 - var(--o)) * var(--px));
+  font-size: max(30px, calc(60 * var(--px)));
+  color: var(--c-purple);
+}
+
+/* Thẻ xanh: chữ cách mép trái 15px, mép trên 23.7px. */
+.honorBox {
+  left: calc(var(--box-x) * var(--px));
+  top: calc((3567 - var(--o)) * var(--px));
+  width: calc(var(--box-w) * var(--px));
+  height: calc(137.5 * var(--px));
+  padding: calc(23.7 * var(--px)) calc(15 * var(--px)) 0;
+  background: var(--c-blue);
+  color: #fff;
+  font-style: italic;
+}
+
+.honorBox p + p {
+  margin-top: calc(23.4 * var(--px));
+}
+
+.honor1 {
+  --img-x: 44.5;
+  --img-w: 325.5;
+  --bar-x: 45;
+  --bar-w: 324.5;
+  --year-x: 48;
+  --box-x: 46.5;
+  --box-w: 323.5;
+}
+.honor2 {
+  --img-x: 390;
+  --img-w: 324;
+  --bar-x: 391;
+  --bar-w: 322.5;
+  --year-x: 393;
+  --box-x: 390.5;
+  --box-w: 323.5;
+}
+.honor3 {
+  --img-x: 726.5;
+  --img-w: 330;
+  --bar-x: 732;
+  --bar-w: 322.5;
+  --year-x: 734;
+  --box-x: 731.5;
+  --box-w: 323.5;
+}
+.honor4 {
+  --img-x: 1073;
+  --img-y: 3197.5;
+  --img-w: 323.5;
+  --bar-x: 1073.3;
+  --bar-w: 322.5;
+  --year-x: 1075;
+  --box-x: 1073;
+  --box-w: 323;
+}
+
+/* ---------- Khối hồng: ADDITIONAL STUDIES (y 3788–4846) ---------- */
+.pinkBlock {
+  left: 0;
+  right: 0;
+  top: calc((3788 - var(--o)) * var(--px));
+  height: calc(1058 * var(--px));
+  overflow: hidden; /* lego đáy tràn quá mép dưới bị cắt như thiết kế */
+  background: var(--c-purple);
+}
+
+.addlHead {
+  left: 0;
+  right: 0;
+  top: calc(70.1 * var(--px));
+  z-index: 1;
+  font-size: max(28px, calc(64 * var(--px)));
+  text-align: center;
+}
+
+/* Chữ "Additional studies": 18px, dòng cao 23.44px (đo từ design-ref). */
+.study {
+  z-index: 1;
+  top: calc(218.7 * var(--px));
+  font-size: max(14px, calc(18 * var(--px)));
+  line-height: 1.302;
+  text-align: justify;
+}
+
+.strongUp {
+  font-weight: 700;
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+.underline {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.studyLeft {
+  left: calc(47 * var(--px));
+  width: calc(652.5 * var(--px));
+}
+
+/* Cột phải: vị trí quy đổi từ ảnh tham chiếu chủ dự án gửi (cùng hàng với cột trái). */
+.studyRight {
+  left: calc(740.5 * var(--px));
+  width: calc(645 * var(--px));
+}
+
+.divider {
+  z-index: 1;
+  left: calc(718 * var(--px));
+  top: calc(223 * var(--px));
+  width: max(1px, calc(2 * var(--px)));
+  height: calc(247.8 * var(--px));
+  background: var(--c-blue);
+}

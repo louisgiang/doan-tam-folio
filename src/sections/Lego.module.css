@@ -1,0 +1,86 @@
+/*
+ * Số đo từ design-ref/Lego.png, khổ 1440, gốc = đầu dòng tiêu đề (y=796.7 trên ảnh).
+ * Phần cao 2332 − 796.7 = 1535.3.
+ */
+.lego {
+  position: relative;
+  height: calc(1535.3 * var(--px));
+  overflow: hidden; /* lego đáy tràn quá mép dưới bị cắt như thiết kế */
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  padding-inline: var(--gutter);
+  font-size: var(--fs-hero);
+}
+
+.pink {
+  color: var(--c-pink);
+}
+
+.f1 {
+  position: absolute;
+  z-index: 1;
+  left: calc(84 * var(--px));
+  top: calc(324.3 * var(--px));
+  width: calc(588 * var(--px));
+  margin: 0;
+}
+
+.f1 img {
+  width: 100%;
+  aspect-ratio: 588 / 440;
+  object-fit: cover;
+}
+
+.f1 figcaption {
+  margin-top: calc(12.7 * var(--px));
+  font-size: var(--fs-body);
+  line-height: 1.172;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--c-blue);
+}
+
+/* Một khung chữ căn đều hai bên; các đoạn cách nhau một dòng trống (23.44px). */
+.text {
+  position: absolute;
+  z-index: 1;
+  left: calc(708.5 * var(--px));
+  top: calc(324.5 * var(--px));
+  width: calc(507.5 * var(--px));
+  font-size: var(--fs-body);
+  line-height: 1.172;
+  text-align: justify;
+  color: var(--c-blue);
+}
+
+.text p + p {
+  margin-top: 1.172em;
+}
+
+.lead {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.text .traits {
+  margin-top: calc(1.172em * 2 - 5 * var(--px));
+  font-weight: 700;
+  text-align: left;
+}
+
+.videos {
+  position: absolute;
+  z-index: 2;
+  left: calc(81 * var(--px));
+  top: calc(865.3 * var(--px));
+  display: flex;
+  gap: calc(15 * var(--px));
+}
+
+.video {
+  width: calc(661 * var(--px));
+  aspect-ratio: 661 / 404;
+}

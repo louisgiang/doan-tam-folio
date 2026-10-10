@@ -116,3 +116,27 @@
 - **Khối lego lớn nét hơn:**
   - Đổi hiệu ứng từ lật 3D sang **phóng-mờ 400ms** (BRIEF cho phép một trong hai): phần tử 3D (perspective/preserve-3d/backface) hay bị trình duyệt vẽ ở độ phân giải thấp. Giờ lúc đứng yên ảnh không còn transform/filter nào → vẽ nét hoàn toàn.
   - Ảnh nén lại ở chất lượng cao: big-lego WebP q95 rộng 2000px, kênh trong suốt không nén mất (179KB, trước 82KB q82 rộng 1600 — mảng xanh chuyển màu dễ bị dải màu). Avatar q88 rộng 2000px (272KB).
+
+## Bước 5 — LEGO, COMMUNITY, AWARDS
+
+### Chung
+- Mỗi phần dựng theo toạ độ đo từ design-ref (gốc = đầu dòng tiêu đề); đã đối chiếu trên trình duyệt ở 1440: vị trí ảnh/khung đúng tới ±1px, mọi đoạn chữ có cùng số dòng và xuống dòng cùng chỗ như thiết kế.
+- **Lego đáy dùng chung** (`src/data/lego-footer.json`, 14 khối): MYSELF (khối xanh), LEGO, AWARDS là CÙNG một cụm, đặt lệch nhau: so với AWARDS, LEGO lệch +2px ngang, MYSELF lệch −11px ngang; mỗi phần cắt cụm ở mép dưới của mình. Khối nào đo được rõ nhất ở trang nào thì lấy từ trang đó (ghi ở trường `from`). 2 khối chỉ lộ núm ở đáy phần LEGO được đặt theo núm (ước lượng tỉ lệ).
+- Sửa lỗi lớp: khung lego tạo lớp xếp chồng riêng (z-index: 0) để lego luôn nằm dưới chữ/ảnh/video.
+- Ảnh: WebP rộng tối đa 1800px (chất lượng 82). Nặng nhất: `ecowander-one-project-two-ways-to-act-1.webp` 497KB (ảnh gốc 6.4MB, nhiều chi tiết lá cây).
+
+### LEGO
+- Ảnh F1 588×440; chú thích 20px đậm nghiêng; cột chữ 507.5px căn đều, các đoạn cách một dòng trống.
+- Hai video 661×404 (đúng tỉ lệ ảnh bìa), cách nhau 15px, nằm trên lego đáy. **Ảnh bìa đã có sẵn nút play** → dùng nguyên ảnh bìa làm nút bấm, không vẽ thêm nút.
+- `src/data/videos.ts` là file cấu hình nguồn video duy nhất: `src` (MP4 trong `public/videos/`) hoặc `embedUrl` (YouTube/Vimeo). **Chưa có file video** → hiện ảnh bìa, không bấm được, không báo lỗi.
+
+### COMMUNITY
+- Khối xanh bạc hà #92DFB5 (y 1082–2065) chứa ARIA PROJECT và LOTUSMED 2025; tiêu đề trong khối màu kem, ngoài khối màu đen; tất cả 32px.
+- ECOWANDER: slider 2 ảnh, chấm 14px cách 5px; bấm chấm / vuốt ngang (chạm), trượt 400ms, không tự chạy. Ảnh slider lấy theo mọi file `ecowander-*` trong `src/assets/community/` (nguồn: `figma-export/assets/community/EcoWander…`; BRIEF nói thư mục `ecowander/` nhưng thực tế ảnh nằm chung thư mục `community/`).
+- ⚠ Dòng "Nearly 200 attendees · VND 60 million raised by the team" lặp lại ở cả ARIA và LOTUSMED trong thiết kế — giữ nguyên, cần chủ dự án xác nhận.
+
+### AWARDS
+- Cỡ chữ đo được: tiêu đề giải 32px Cubano ("GOLD MEDAL  /  ICAN 2025", hai dấu cách quanh "/"); tagline 20px đậm nghiêng màu #E09CE7; tên cuộc thi 16px nghiêng gạch chân (không có link trong thiết kế → để chữ thường, không bấm được); thân bài 20px nghiêng căn đều; "OTHER HONORS & A SCHOLARSHIP" 64px giữa; "ECONOMICS & FINANCE" 32px đậm nghiêng; năm 60px; "ADDITIONAL STUDIES" 64px; chữ trong khối hồng **18px**, dòng 23.44px.
+- Khung ICAN: nền #FAF5D4, ảnh chứng nhận dọc đặt lệch trái như thiết kế (không căn giữa).
+- Thẻ 1 ("Honor Award") trong thiết kế cao hơn 3 thẻ còn lại 2.7px → căn thẳng hàng cả bốn.
+- Cột phải "Additional studies": vị trí quy đổi từ ảnh chủ dự án gửi (x 740.5, rộng 645, cùng hàng với cột trái); đường kẻ dọc x 718, cao 247.8.

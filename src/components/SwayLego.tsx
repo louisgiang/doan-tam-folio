@@ -9,7 +9,18 @@ import styles from './SwayLego.module.css';
  * Dùng CSS animation (chỉ transform); mỗi khối lệch pha và lệch chu kỳ;
  * tạm dừng khi ra khỏi màn hình; prefers-reduced-motion thì đứng yên (xem CSS).
  */
-export function SwayLego({ cluster, className }: { cluster: LegoCluster; className?: string }) {
+export function SwayLego({
+  cluster,
+  offsetX = 0,
+  offsetY = 0,
+  className,
+}: {
+  cluster: LegoCluster;
+  /** Vị trí mép trái / mép trên khung so với khối chứa (px ở khổ thiết kế 1440). */
+  offsetX?: number;
+  offsetY?: number;
+  className?: string;
+}) {
   const frameRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,7 +38,13 @@ export function SwayLego({ cluster, className }: { cluster: LegoCluster; classNa
     <div
       ref={frameRef}
       className={`${styles.frame} ${className ?? ''}`}
-      style={{ '--frame-aspect': `${FW} / ${FH}` } as CSSProperties}
+      style={
+        {
+          '--frame-aspect': `${FW} / ${FH}`,
+          left: `calc(${offsetX} * var(--px))`,
+          top: `calc(${offsetY} * var(--px))`,
+        } as CSSProperties
+      }
       data-paused="true"
       aria-hidden="true"
     >
