@@ -5,3 +5,5 @@ dist/
 *.tsbuildinfo
 # Video gốc (850MB) — chỉ commit bản nén trong public/videos/
 figma-export/assets/public-video/
+# Gói zip bàn giao
+release/
