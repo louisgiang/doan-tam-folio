@@ -49,6 +49,11 @@ With TTH Vinh General Hospital and the LotusMed team, I helped coordinate health
 
 *Through articles and educational website content, I explore economics and everyday financial issues for students and a wider audience. Writing for non-specialist readers gives me practice organizing ideas, choosing accessible language, and connecting economic topics with familiar questions.*
 
+## Ảnh slider ECOWANDER (theo chủ dự án, 2026-10-11)
+
+Tự chuyển mỗi 2 giây, không có chấm. Thứ tự: 2 ảnh trong thiết kế (trồng cây, triển lãm kính) → EcoWander 2 → 10.
+Lưu ý: EcoWander 5–10 có nội dung LotusMed (băng rôn "LOTUSMED VIETNAM", bệnh viện) — chủ dự án xác nhận vẫn dùng cả 2–10.
+
 ## Chữ do Claude thêm (không có trong thiết kế)
 
-- Mô tả ảnh: "ARIA Project concert", "LotusMed 2025 team", "Green School Club members", "EcoWander project photo 1/2"; nhãn chấm slider "Show image N of M".
+- Mô tả ảnh: "ARIA Project concert", "LotusMed 2025 team", "Green School Club members", "EcoWander project photo 1…11".

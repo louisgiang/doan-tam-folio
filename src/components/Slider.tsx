@@ -1,28 +1,85 @@
-import { useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import styles from './Slider.module.css';
 
 /**
- * Slider ảnh (BRIEF mục 5, ECOWANDER): bấm chấm để chuyển, vuốt ngang trên điện thoại,
- * trượt ngang 400ms, KHÔNG tự chạy. Số chấm = số ảnh.
+ * Slider ảnh ECOWANDER (đã đổi theo chủ dự án): tự chuyển ảnh sau mỗi `interval` ms,
+ * trượt ngang 400ms, chạy vòng liền mạch (ảnh cuối trượt tiếp sang ảnh đầu), không có chấm.
+ * Tạm dừng khi rê chuột lên ảnh, khi ra khỏi màn hình hoặc chuyển tab. Cảm ứng: vuốt ngang.
+ * prefers-reduced-motion: vẫn đổi ảnh nhưng không trượt.
  */
 export function Slider({
   images,
   label,
+  interval = 2000,
   className,
 }: {
   images: { src: string; alt: string }[];
   label: string;
+  interval?: number;
   className?: string;
 }) {
+  const count = images.length;
+  // Thêm bản sao ảnh đầu ở cuối để trượt vòng liền mạch.
+  const slides = count > 1 ? [...images, images[0]] : images;
   const [index, setIndex] = useState(0);
+  const [animate, setAnimate] = useState(true);
   const [drag, setDrag] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [tabHidden, setTabHidden] = useState(false);
   const start = useRef<{ x: number; y: number; id: number } | null>(null);
   const viewport = useRef<HTMLDivElement>(null);
-  const count = images.length;
-  const go = (i: number) => setIndex(Math.max(0, Math.min(count - 1, i)));
+
+  // Chỉ chạy khi nhìn thấy được.
+  useEffect(() => {
+    const el = viewport.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    io.observe(el);
+    const onVis = () => setTabHidden(document.hidden);
+    document.addEventListener('visibilitychange', onVis);
+    return () => {
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVis);
+    };
+  }, []);
+
+  // Tự chuyển ảnh.
+  useEffect(() => {
+    if (count < 2 || !visible || tabHidden || hovered || drag !== 0) return;
+    const timer = window.setTimeout(() => {
+      setAnimate(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      setIndex((i) => i + 1);
+    }, interval);
+    return () => window.clearTimeout(timer);
+  }, [count, visible, tabHidden, hovered, drag, index, interval]);
+
+  // Tới bản sao ảnh đầu: nhảy về ảnh đầu thật, không trượt (người xem không thấy khác biệt).
+  useEffect(() => {
+    if (index < count) return;
+    const reset = () => {
+      setAnimate(false);
+      setIndex(0);
+    };
+    if (!animate) return reset();
+    const t = window.setTimeout(reset, 420);
+    return () => window.clearTimeout(t);
+  }, [index, count, animate]);
+
+  // Sau khi nhảy về (không trượt), bật lại hiệu ứng trượt cho lần sau.
+  useEffect(() => {
+    if (animate) return;
+    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setAnimate(true)));
+    return () => cancelAnimationFrame(raf);
+  }, [animate]);
+
+  const go = (i: number) => {
+    setAnimate(true);
+    setIndex(((i % count) + count) % count);
+  };
 
   const onDown = (e: PointerEvent) => {
-    if (e.pointerType === 'mouse') return; // chuột: dùng chấm
+    if (e.pointerType === 'mouse') return;
     start.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
   };
   const onMove = (e: PointerEvent) => {
@@ -43,11 +100,14 @@ export function Slider({
     setDrag(0);
   };
 
+  const current = index % count;
   return (
     <div className={className} role="region" aria-roledescription="carousel" aria-label={label}>
       <div
         ref={viewport}
         className={styles.viewport}
+        onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
+        onPointerLeave={(e) => e.pointerType === 'mouse' && setHovered(false)}
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
@@ -55,36 +115,23 @@ export function Slider({
       >
         <div
           className={styles.track}
-          data-dragging={drag !== 0}
+          data-animate={animate && drag === 0}
           style={{ transform: `translateX(calc(${-index * 100}% + ${drag}px))` }}
         >
-          {images.map((img, i) => (
+          {slides.map((img, i) => (
             <img
-              key={img.src}
+              key={i}
               className={styles.slide}
               src={img.src}
-              alt={img.alt}
+              alt={i === current ? img.alt : ''}
               draggable={false}
-              loading="lazy"
+              // Ảnh đầu tải theo trang; các ảnh sau tải sẵn khi slider vào màn hình (tránh trống khi trượt tới).
+              loading={i === 0 || visible ? 'eager' : 'lazy'}
               aria-hidden={i !== index}
             />
           ))}
         </div>
       </div>
-      {count > 1 && (
-        <div className={styles.dots}>
-          {images.map((img, i) => (
-            <button
-              key={img.src}
-              type="button"
-              className={styles.dot}
-              aria-label={`Show image ${i + 1} of ${count}`}
-              aria-current={i === index}
-              onClick={() => go(i)}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

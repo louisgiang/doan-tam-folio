@@ -91,7 +91,8 @@
   transition:
     opacity 400ms ease,
     transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
-    filter 400ms ease;
+    filter 400ms ease,
+    translate 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Theo % của hộp chung (649.3 × 645.6) để dùng được cả khi hộp đổi cỡ (điện thoại). */
@@ -125,6 +126,41 @@
 @media (prefers-reduced-motion: reduce) {
   .brick,
   .photo {
+    transition: none;
+  }
+}
+
+/* ---------- Khi đang hiện ảnh chân dung (rê chuột / chạm) ----------
+ * Theo design-ref/myself 2.png: đoạn mô tả kéo xuống 23px, ảnh và khối xanh bên dưới kéo xuống 18px.
+ * Vùng nhận rê chuột (.flip) đứng yên, chỉ hình bên trong dịch xuống — tránh nhấp nháy khi
+ * mép vùng rê trượt khỏi con trỏ.
+ */
+.about {
+  transition: height 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.intro {
+  transition: translate 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 1024px) {
+  .myself[data-photo='true'] .about {
+    height: calc((859.3 + 18) * var(--px));
+  }
+
+  .myself[data-photo='true'] .intro {
+    translate: 0 calc(23 * var(--px));
+  }
+
+  .myself[data-photo='true'] .brick,
+  .myself[data-photo='true'] .photo {
+    translate: 0 calc(18 * var(--px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about,
+  .intro {
     transition: none;
   }
 }

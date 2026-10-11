@@ -12,7 +12,7 @@ const OUT = path.join(ROOT, 'src/assets');
 const report = [];
 async function toWebp(from, to, { maxWidth, quality = 82, alphaQuality = 90 } = {}) {
   fs.mkdirSync(path.dirname(to), { recursive: true });
-  let img = sharp(from);
+  let img = sharp(from).rotate(); // xoay đúng chiều theo EXIF (ảnh chụp điện thoại/máy ảnh)
   if (maxWidth) img = img.resize({ width: maxWidth, withoutEnlargement: true });
   const info = await img.webp({ quality, alphaQuality, effort: 6 }).toFile(to);
   report.push([path.relative(ROOT, to), fs.statSync(from).size, info.size, info.width, info.height]);
@@ -59,6 +59,24 @@ for (const dir of ['lego-page', 'community', 'awards']) {
   for (const f of fs.readdirSync(path.join(SRC, dir)).filter((f) => f.endsWith('.png'))) {
     await toWebp(path.join(SRC, dir, f), path.join(OUT, dir, `${slug(f)}.webp`), { maxWidth: 1800 });
   }
+}
+
+// Ảnh slider ECOWANDER thêm sau ("EcoWander 2.jpg" … "EcoWander 10.JPG"): tên đánh số 2 chữ số
+// để thứ tự tên tệp = thứ tự chiếu; toWebp tự xoay đúng chiều theo EXIF.
+for (const f of fs.readdirSync(path.join(SRC, 'community'))) {
+  const m = f.match(/^EcoWander (\d+)\.jpe?g$/i);
+  if (!m) continue;
+  const n = m[1].padStart(2, '0');
+  // Khung slider ~600px (~1200px ở màn @2x) → rộng 1300px cho mọi ảnh (ảnh dọc cũng đủ rộng
+  // để cắt vừa khung ngang); chất lượng 75 vì ảnh lá cây nhiều chi tiết rất khó nén.
+  const from = path.join(SRC, 'community', f);
+  const to = path.join(OUT, 'community', `ecowander-photo-${n}.webp`);
+  const info = await sharp(from)
+    .rotate()
+    .resize({ width: 1300, withoutEnlargement: true })
+    .webp({ quality: 75, effort: 6 })
+    .toFile(to);
+  report.push([path.relative(ROOT, to), fs.statSync(from).size, info.size, info.width, info.height]);
 }
 
 for (const [file, before, after, w, h] of report)

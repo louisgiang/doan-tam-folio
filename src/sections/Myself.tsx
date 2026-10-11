@@ -24,7 +24,7 @@ export function Myself() {
   const lastPointer = useRef('');
 
   return (
-    <div className={styles.myself}>
+    <div className={styles.myself} data-photo={showPhoto}>
       <div className={styles.about}>
         <h2 className={`display ${styles.title}`} data-lego-avoid>
           A LITTLE <span className={styles.blue}>ABOUT ME</span>

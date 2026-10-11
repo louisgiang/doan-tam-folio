@@ -4,7 +4,8 @@ import lotusUrl from '../assets/community/lotusmed-2025.webp';
 import { Slider } from '../components/Slider';
 import styles from './Community.module.css';
 
-// Ảnh slider ECOWANDER: mọi file "ecowander…" trong thư mục, theo thứ tự tên → số chấm tự khớp.
+// Ảnh slider ECOWANDER: mọi file "ecowander-*" trong thư mục, chiếu theo thứ tự tên:
+// 2 ảnh trong thiết kế (one-project-…-1, -2) rồi ecowander-photo-02 … -10 (EcoWander 2–10).
 const ecoFiles = import.meta.glob<string>('../assets/community/ecowander-*.webp', {
   eager: true,
   query: '?url',

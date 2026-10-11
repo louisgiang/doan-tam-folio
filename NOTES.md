@@ -189,3 +189,6 @@
 
 ## Chỉnh sau khi giao (2026-10-11)
 - MYSELF, khối lego lớn ↔ ảnh chân dung: **đổi theo hover** (chủ dự án yêu cầu). Chuột: rê vào hiện ảnh, rời ra hiện lại lego, bấm chuột không đổi gì thêm. Màn hình cảm ứng (không có hover): chạm để đổi. Bàn phím: Enter/Space để đổi. Bỏ hiệu ứng nhích lên khi hover (việc đổi hình đã là gợi ý).
+- MYSELF, khi đang hiện ảnh chân dung (rê chuột / chạm): đoạn mô tả kéo xuống 23px, ảnh và khối xanh bên dưới kéo xuống 18px (đúng độ lệch giữa `myself 1.png` và `myself 2.png`), 400ms; rời chuột thì trở lại. Vùng nhận rê chuột đứng yên (chỉ hình bên trong dịch) để không nhấp nháy. Chỉ áp dụng từ 1024px trở lên (dưới đó bố cục xếp dọc, chạm để đổi hình).
+- COMMUNITY, ECOWANDER (theo chủ dự án — thay BRIEF "không tự chạy"): **bỏ chấm, tự chuyển ảnh mỗi 2 giây**, trượt 400ms, chạy vòng liền mạch (bản sao ảnh đầu ở cuối). Tạm dừng khi rê chuột lên ảnh, khi ra khỏi màn hình, khi chuyển tab; vẫn vuốt được trên cảm ứng; reduced-motion: đổi ảnh không trượt. 11 ảnh: 2 ảnh thiết kế + EcoWander 2–10. ⚠ EcoWander 5–10 là ảnh LotusMed — chủ dự án xác nhận vẫn dùng.
+  - Ảnh mới: tự xoay theo EXIF (5, 6, 9 là ảnh dọc), rộng 1300px, WebP chất lượng 75: 42–125KB, riêng 3 ảnh rừng (02–04) 387–444KB vì lá cây nhiều chi tiết. Ảnh dọc cắt vừa khung ngang, ưu tiên giữ phần trên (object-position 50% 30%).
