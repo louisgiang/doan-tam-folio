@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import avatarUrl from '../assets/myself/avatar.webp';
 import bigLegoUrl from '../assets/myself/big-lego.webp';
 import { SwayLego } from '../components/SwayLego';
@@ -20,6 +20,8 @@ const SIDES: { id: SectionId; title: string; text: string }[] = [
 export function Myself() {
   const { navigate } = useSectionNav();
   const [showPhoto, setShowPhoto] = useState(false);
+  // Loại con trỏ của lần nhấn gần nhất (click bằng chuột thì bỏ qua vì đã đổi theo hover).
+  const lastPointer = useRef('');
 
   return (
     <div className={styles.myself}>
@@ -61,7 +63,15 @@ export function Myself() {
           data-flipped={showPhoto}
           aria-pressed={showPhoto}
           aria-label={showPhoto ? 'Show the LEGO brick' : 'Show a photo of Tam'}
-          onClick={() => setShowPhoto((v) => !v)}
+          // Chuột: rê vào hiện ảnh, rời ra hiện lại lego. Cảm ứng/bàn phím: bấm để đổi.
+          onPointerEnter={(e) => e.pointerType === 'mouse' && setShowPhoto(true)}
+          onPointerLeave={(e) => e.pointerType === 'mouse' && setShowPhoto(false)}
+          onPointerDown={(e) => (lastPointer.current = e.pointerType)}
+          onClick={() => {
+            const fromMouse = lastPointer.current === 'mouse';
+            lastPointer.current = '';
+            if (!fromMouse) setShowPhoto((v) => !v);
+          }}
         >
           <img className={styles.brick} src={bigLegoUrl} alt="" draggable={false} />
           <img className={styles.photo} src={avatarUrl} alt="Portrait of Tam" draggable={false} />
