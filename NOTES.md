@@ -170,6 +170,20 @@
   - right: `ffmpeg -i right.MOV -vf "scale=1280:-2,fps=30" -c:v libx264 -preset slow -crf 24 -profile:v high -pix_fmt yuv420p -movflags +faststart -an right.mp4`
   - left (2 lượt): `ffmpeg -i left.mp4 -vf fps=30 -c:v libx264 -preset slow -b:v 1100k -pass 1 -an -f mp4 NUL` rồi `... -b:v 1100k -maxrate 1800k -bufsize 3600k -pass 2 -movflags +faststart -an left_out.mp4`
 
+### Đổi sang YouTube (2026-10-14, chủ dự án yêu cầu)
+
+- Hai video phát qua YouTube, cấu hình trong `src/data/videos.ts` (`src: null`, `embedUrl`):
+  - trái (5:35): `https://www.youtube.com/embed/EKTRENAABPA?si=H3kmv7wdK5IHU1iR`
+  - phải (0:34): `https://www.youtube.com/embed/NsNCkdZvX58?si=DGEwQdJIFD6KVOFg`
+- Vẫn hiện ảnh bìa trước; bấm mới nạp iframe YouTube (`autoplay=1`). Không sửa `VideoSlot` hay CSS.
+- Khung 661×404 (1.64:1) hẹp hơn 16:9 → trình phát YouTube có dải đen mỏng trên/dưới. **Chủ dự án chọn giữ nguyên.**
+- **Đã xoá** `public/videos/left.mp4` và `right.mp4` (chủ dự án đồng ý); các mục nén MP4 ở trên chỉ còn là lịch sử. Bản build không còn ~60MB video.
+- Ảnh bìa Figma bị mờ (khung hình đang chuyển động, phóng to) → **chủ dự án yêu cầu thay bằng thumbnail YouTube**, có nút play:
+  - Tạo bằng `node scripts/make-video-covers.mjs`; thumbnail gốc lưu ở `figma-export/assets/lego-page/youtube/`.
+  - Trái: YouTube chỉ có `sddefault` 640×480 (có dải đen) → cắt dải đen, cắt 2 bên về tỉ lệ 2644:1616, phóng lanczos3 lên 1800×1100 + làm nét nhẹ. Phải: `maxresdefault` 1280×720, xử lý như trên.
+  - Nút play vẽ lại theo số đo ảnh bìa Figma (khung 174×170/2644px, bo ~24px, nền #1A1A1B, tam giác #E2E2E2 38×48), vẽ thẳng vào ảnh như ảnh bìa cũ.
+  - **Lưu ý:** `optimize-images.mjs` sẽ ghi đè `video-cover-*.webp` bằng ảnh bìa Figma cũ → nếu chạy lại thì phải chạy `make-video-covers.mjs` ngay sau.
+
 ## Bước 7 — Kiểm tra cuối (2026-10-11)
 
 - `npm run build` (bản sạch): không lỗi, không cảnh báo.

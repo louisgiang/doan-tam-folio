@@ -21,23 +21,21 @@ export interface VideoSource {
   embedUrl: string | null;
 }
 
-// File gốc: figma-export/assets/public-video/{left.mp4,right.MOV} (không đưa vào git, quá nặng).
-// Bản nén nằm ở public/videos/ — cách nén ghi trong NOTES.md.
-const base = import.meta.env.BASE_URL;
+// Hai video phát qua YouTube (link chủ dự án gửi) — xem NOTES.md.
 
 export const LEGO_VIDEOS: VideoSource[] = [
   {
     id: 'lego-video-1',
     label: 'LEGO build video 1',
     poster: cover1,
-    src: `${base}videos/left.mp4`,
-    embedUrl: null,
+    src: null,
+    embedUrl: 'https://www.youtube.com/embed/EKTRENAABPA?si=H3kmv7wdK5IHU1iR',
   },
   {
     id: 'lego-video-2',
     label: 'LEGO build video 2',
     poster: cover2,
-    src: `${base}videos/right.mp4`,
-    embedUrl: null,
+    src: null,
+    embedUrl: 'https://www.youtube.com/embed/NsNCkdZvX58?si=DGEwQdJIFD6KVOFg',
   },
 ];
